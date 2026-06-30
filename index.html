@@ -25,7 +25,7 @@ header{
 
 header h1{
     font-size:38px;
-    color:#0d6efd;
+    color:#800080;
     font-weight:bold;
 }
 
@@ -65,12 +65,12 @@ header p{
     display:block;
 }
 
-.blue{
-    color:#0d6efd;
+.red{
+    color:#FF0000;
 }
 
-.yellow{
-    color:#f0a500;
+.green{
+    color:#00FF00;
 }
 
 .card h2{
@@ -92,12 +92,12 @@ header p{
     font-weight:bold;
 }
 
-.open.blue{
-    color:#5aa9ff;
+.open.red{
+    color:#FF0000;
 }
 
-.open.yellow{
-    color:#f0a500;
+.open.green{
+    color:#00FF00;
 }
 
 footer{
@@ -106,9 +106,30 @@ footer{
     font-size:18px;
     padding:35px 20px;
 }
+
+:root{--bg:#071020;--text:#fff;--card:#162234}
+body{background:var(--bg)!important;color:var(--text)!important}
+.card{background:var(--card)!important}
+body.light{--bg:#f5f7fb;--text:#111;--card:#fff}
+#themeBtn{position:fixed;top:15px;right:15px;padding:8px 12px;border-radius:20px}
+</style>
+<style>
+#settingsBtn{position:fixed;top:15px;right:15px;background:transparent;border:none;padding:0;font-size:28px;cursor:pointer;z-index:100;}
+#panel{display:none;position:fixed;top:55px;right:15px;background:#fff;color:#000;padding:12px;border-radius:10px;box-shadow:0 2px 8px #0005;z-index:99}
+body:not(.light) #panel{background:#162234;color:#fff}
+</style>
+<style>
+#bg-video{position:fixed;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;filter:brightness(var(--vb,1)) blur(var(--blur,0px))}
+body::before{content:'';position:fixed;inset:0;background:rgba(0,0,0,var(--ov,0.35));z-index:-1}
+.setting-group{margin-top:10px}.setting-group label{display:block;margin:8px 0 4px}
+#videoPicker{width:100%;padding:10px;border-radius:12px}
 </style>
 </head>
-<body>
+<body><video id='bg-video' autoplay muted loop playsinline><source id='bgsrc' src='videos/video1.mp4' type='video/mp4'></video><button id='settingsBtn'>⚙️</button><div id='panel'><div class='setting-group'><h4>1. Mode Tema</h4>
+<div id='themeSwitch' style="display:flex;background:#3a475b;border-radius:14px;overflow:hidden">
+<button id='darkBtn' style="flex:1;padding:12px;border:0;background:#1ea0e6;color:#fff">🌙 Gelap</button>
+<button id='lightBtn' style="flex:1;padding:12px;border:0;background:transparent;color:#ddd">☀️ Terang</button>
+</div></div><div class='setting-group'><h3>2. Background Video</h3><label>Pilih Video</label><select id='videoPicker'><option value='videos/hujan.mp4'>Video 1</option><option value='videos/video2.mp4'>Video 2</option><option value='videos/video3.mp4'>Video 3</option></select><label>Kecerahan Video</label><input id='bright' type='range' min='0.3' max='1.5' step='0.1'><label>Blur Video</label><input id='blur' type='range' min='0' max='10'><label>Gelap Overlay</label><input id='overlay' type='range' min='0' max='0.8' step='0.05'></div></div>
 <header>
 <h1>📱 Catat Pemakaian HP</h1>
 <p>Pilih aplikasi yang ingin kamu gunakan</p>
@@ -116,21 +137,21 @@ footer{
 <div class="container">
 <div class="card">
 <div class="icon"><img alt="TikTok" src="img/tiktok-biasa.png"/></div>
-<h2 class="blue">TikTok Biasa</h2>
+<h2 class="red">TikTok Biasa</h2>
 <p>
             Catatan pemakaian untuk aplikasi TikTok versi reguler.
         </p>
-<a class="open blue" href="Tiktok-Biasa.html">
+<a class="open red" href="Tiktok-Biasa.html">
             Buka →
         </a>
 </div>
 <div class="card">
 <div class="icon"><img alt="TikTok Lite" src="img/tiktok-lite.png"/></div>
-<h2 class="yellow">TikTok Lite</h2>
+<h2 class="green">TikTok Lite</h2>
 <p>
             Catatan pemakaian untuk aplikasi TikTok Lite.
         </p>
-<a class="open yellow" href="Tiktok-Lite.html">
+<a class="open green" href="Tiktok-Lite.html">
             Buka →
         </a>
 </div>
@@ -138,5 +159,21 @@ footer{
 <footer>
     Data setiap aplikasi disimpan terpisah di perangkatmu.
 </footer>
-</body>
+
+<script>
+const s=document.getElementById('settingsBtn'),pnl=document.getElementById('panel');
+s.onclick=()=>pnl.style.display=pnl.style.display==='block'?'none':'block';
+const db=document.getElementById('darkBtn'),lb=document.getElementById('lightBtn');
+function setTheme(m){document.body.classList.toggle('light',m==='light');localStorage.theme=m;
+db.style.background=m==='dark'?'#1ea0e6':'transparent';lb.style.background=m==='light'?'#1ea0e6':'transparent';
+db.style.color='#fff';lb.style.color='#fff';}
+setTheme(localStorage.theme||'dark');db.onclick=()=>setTheme('dark');lb.onclick=()=>setTheme('light');
+const vp=videoPicker,b=bright,bl=blur,o=overlay,src=bgsrc,v=bgVideo||document.getElementById('bg-video');
+vp.value=localStorage.v||'videos/video1.mp4';src.src=vp.value;document.getElementById('bg-video').load();
+b.value=localStorage.br||1;bl.value=localStorage.blu||0;o.value=localStorage.ov||0.35;
+function ap(){document.documentElement.style.setProperty('--vb',b.value);document.documentElement.style.setProperty('--blur',bl.value+'px');document.documentElement.style.setProperty('--ov',o.value);}
+ap();
+vp.onchange=()=>{localStorage.v=vp.value;src.src=vp.value;document.getElementById('bg-video').load();};
+[b,bl,o].forEach(x=>x.oninput=()=>{localStorage[x.id=='bright'?'br':x.id=='blur'?'blu':'ov']=x.value;ap();});
+</script></body>
 </html>
