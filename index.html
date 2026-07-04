@@ -118,12 +118,17 @@ body.light{--bg:#f5f7fb;--text:#111;--card:#fff}
 #panel{display:none;position:fixed;top:55px;right:15px;background:#fff;color:#000;padding:12px;border-radius:10px;box-shadow:0 2px 8px #0005;z-index:99}
 body:not(.light) #panel{background:#162234;color:#fff}
 </style></head>
-<body><button id='settingsBtn'>⚙️</button><div id='panel'><label><input type='checkbox' id='themeToggle'> Mode Terang</label></div>
+<body><button id="settingsBtn">⚙️</button><div id="panel"><label><input id="themeToggle" type="checkbox"/> Mode Terang</label></div>
 <header>
 <h1>📱 Catat Pemakaian HP</h1>
 <p>Pilih aplikasi yang ingin kamu gunakan</p>
 </header>
-<div class="container">
+<div class="container"><div class="card">
+<div class="icon"><img alt="Pemakaian HP" src="img/pemakaian-hp.png"/></div>
+<h2 class="blue">Pemakaian HP</h2>
+<p>Catatan pemakaian HP secara umum.</p>
+<a class="open blue" href="Pemakaian-Hp.html">            Buka →        </a>
+</div>
 <div class="card">
 <div class="icon"><img alt="TikTok" src="img/tiktok-biasa.png"/></div>
 <h2 class="blue">TikTok Biasa</h2>
@@ -148,7 +153,6 @@ body:not(.light) #panel{background:#162234;color:#fff}
 <footer>
     Data setiap aplikasi disimpan terpisah di perangkatmu.
 </footer>
-
 <script>
 const s=document.getElementById('settingsBtn'),pnl=document.getElementById('panel'),tg=document.getElementById('themeToggle');
 s.onclick=()=>pnl.style.display=pnl.style.display==='block'?'none':'block';
