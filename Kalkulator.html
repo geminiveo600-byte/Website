@@ -114,14 +114,13 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid
     <button class="g" onclick="githubBackup()">
      📦 Cadangan
     </button>
-    <button class="o" onclick="file.click()">
+    <button class="o" onclick="githubRestore()">
      📂 Pulihkan
     </button>
     <button class="r" onclick="hapusSemua()">
      🗑 Hapus Semua
     </button>
    </div>
-   <input accept=".json" hidden="" id="file" onchange="githubRestore()" type="file"/>
    <table>
     <thead>
      <tr>
@@ -140,7 +139,8 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid
     </tbody>
    </table>
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js">
+  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+<script>
 function saveGithub(){
  localStorage.setItem("githubToken",document.getElementById("githubToken").value);
  localStorage.setItem("githubRepo",document.getElementById("githubRepo").value);
@@ -199,8 +199,8 @@ async function githubRestore(){
 }
 
 </script>
-  <script>
-   let data=JSON.parse(localStorage.getItem('riwayat')||'[]');
+<script>
+let data=JSON.parse(localStorage.getItem('riwayat')||'[]');
 function simpan(){localStorage.setItem('riwayat',JSON.stringify(data))}
 function render(){tb.innerHTML='';if(!data.length){tb.innerHTML='<tr><td colspan=3>Belum ada riwayat</td></tr>';return;}
 data.forEach((x,i)=>tb.innerHTML+=`<tr><td>${x.j} j, ${x.m} mnt</td><td>${x.p}%</td><td><button class="del r" onclick="hapusSatu(${i})">🗑</button></td></tr>`);}
