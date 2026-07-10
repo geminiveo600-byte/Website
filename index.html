@@ -120,13 +120,47 @@ body{background:var(--bg)!important;color:var(--text)!important}
 .card{background:var(--card)!important}
 body.light{--bg:#f5f7fb;--text:#111;--card:#fff}
 #themeBtn{position:fixed;top:15px;right:15px;padding:8px 12px;border-radius:20px}
+
+body::before{
+content:"";
+position:fixed;inset:0;
+background:rgba(0,0,0,var(--overlay,0));
+backdrop-filter:blur(var(--blur,0px));
+pointer-events:none;
+z-index:-1;
+}
 </style>
 <style>
 #settingsBtn{position:fixed;top:15px;right:15px;background:transparent;border:none;padding:0;font-size:28px;cursor:pointer;z-index:100;}
 #panel{display:none;position:fixed;top:55px;right:15px;background:#fff;color:#000;padding:12px;border-radius:10px;box-shadow:0 2px 8px #0005;z-index:99}
 body:not(.light) #panel{background:#162234;color:#fff}
 </style></head>
-<body><button id="settingsBtn">⚙️</button><div id="panel"><label><input id="themeToggle" type="checkbox"/> Mode Terang</label></div>
+<body><button id="settingsBtn">⚙️</button><div id="panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;align-items:center;justify-content:center">
+<div style="background:#162234;color:#fff;width:min(92vw,430px);border-radius:24px;padding:20px">
+<div style="font-size:30px;font-weight:bold">⚙️ Pengaturan</div><hr style="margin:12px 0;border-color:#334155">
+<div style="color:#1da1f2;font-weight:bold;margin:10px 0">1. Tampilan</div>
+<div>Mode Tema</div>
+<div style="display:flex;background:#334155;border-radius:14px;padding:4px;margin-top:8px">
+<button id="darkBtn" style="flex:1;padding:12px">🌙 Gelap</button>
+<button id="lightBtn" style="flex:1;padding:12px">☀️ Terang</button>
+</div>
+<hr style="margin:12px 0;border-color:#334155">
+<div style="color:#1da1f2;font-weight:bold;margin:10px 0">2. Background Foto</div>
+<div style="margin:10px 0">Pilih Gambar</div>
+<select id="bgSelect" style="width:100%;padding:16px;border-radius:22px;background:#2b3546;color:#fff;border:2px solid #1da1f2">
+<option value="">Default</option>
+<option value="background/Foto_V1.jpg">Foto 1</option>
+<option value="background/Foto_V2.jpg">Foto 2</option>
+<option value="background/Foto_V3.jpg">Foto 3</option>
+<option value="background/Foto_V4.jpg">Foto 4</option>
+<option value="background/Foto_V5.jpg">Foto 5</option>
+</select>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;margin-top:18px">
+<label>Kecerahan Foto</label><input id="bright" type="range" min="50" max="150" value="100">
+<label>Blur Foto</label><input id="blur" type="range" min="0" max="20" value="0">
+<label>Gelap Overlay</label><input id="overlay" type="range" min="0" max="80" value="0">
+</div>
+</div></div>
 <header>
 <h1>📱 Catat Pemakaian HP</h1>
 <p>Pilih aplikasi yang ingin kamu gunakan</p>
@@ -163,8 +197,35 @@ body:not(.light) #panel{background:#162234;color:#fff}
 </footer>
 <script>
 const s=document.getElementById('settingsBtn'),pnl=document.getElementById('panel'),tg=document.getElementById('themeToggle');
-s.onclick=()=>pnl.style.display=pnl.style.display==='block'?'none':'block';
+function sync(){let l=document.body.classList.contains('light');lightBtn.style.background=l?'#1da1f2':'transparent';darkBtn.style.background=!l?'#1da1f2':'transparent';}
+s.style.zIndex=1001;
+s.onclick=()=>{pnl.style.display=pnl.style.display==='flex'?'none':'flex';sync();};
+darkBtn.onclick=()=>{document.body.classList.remove('light');localStorage.theme='dark';sync();};
+lightBtn.onclick=()=>{document.body.classList.add('light');localStorage.theme='light';sync();};
 tg.checked=document.body.classList.contains('light');
 tg.onchange=()=>{document.body.classList.toggle('light',tg.checked);localStorage.theme=tg.checked?'light':'dark';};
+
+const bg=document.getElementById('bgSelect'),
+br=document.getElementById('bright'),
+bl=document.getElementById('blur'),
+ov=document.getElementById('overlay');
+function applyBg(){
+const p=bg.value;
+document.body.style.backgroundImage=p?`url('${p}')`:"";
+document.body.style.backgroundSize="cover";
+document.body.style.backgroundPosition="center";
+document.body.style.filter=`brightness(${br.value}%)`;
+document.documentElement.style.setProperty('--blur',bl.value+'px');
+document.documentElement.style.setProperty('--overlay',(ov.value/100).toString());
+localStorage.setItem('bgcfg',JSON.stringify({p,b:br.value,l:bl.value,o:ov.value}));
+}
+const cfg=JSON.parse(localStorage.getItem('bgcfg')||'{}');
+if(cfg.p)bg.value=cfg.p;
+if(cfg.b)br.value=cfg.b;
+if(cfg.l)bl.value=cfg.l;
+if(cfg.o)ov.value=cfg.o;
+[bg,br,bl,ov].forEach(e=>e&&e.addEventListener('input',applyBg));
+applyBg();
+
 </script></body>
 </html>
