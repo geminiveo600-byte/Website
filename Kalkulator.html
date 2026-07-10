@@ -1,7 +1,10 @@
-<!doctype html><html lang='id'><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
-<style>
-
-:root{--bg:#0f172a;--box:#1e293b;--input:#334155;--text:#fff;}
+<!DOCTYPE html>
+<html lang="id">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width,initial-scale=1" name="viewport"/>
+  <style>
+   :root{--bg:#0f172a;--box:#1e293b;--input:#334155;--text:#fff;}
 .light{--bg:#f8fafc;--box:#fff;--input:#e5e7eb;--text:#111827;}
 .mode-btn{position:fixed;z-index:1002;z-index:1002;top:16px;right:16px;width:42px;height:42px;border-radius:50%;background:var(--input);color:var(--text);display:flex;justify-content:center;align-items:center;cursor:pointer;font-size:20px}
 
@@ -28,41 +31,176 @@ body{background-color:var(--bg);color:var(--text);font-family:Arial;max-width:46
 .big{width:100%;padding:15px;border:0;border-radius:10px;background:#0ea5e9;color:#fff;font-size:18px;margin:12px 0}.row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .row button,.del{padding:12px;border:0;border-radius:10px;color:#fff}.g{background:#16a34a}.o{background:#b45309}.r{background:#b91c1c}
 table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid #475569;padding:6px;text-align:center}.del{padding:6px 10px}
-</style></head><body><div class=box>
-<div class='mode-btn' id='gearBtn' onclick='toggleSettings()'>⚙️</div>
-<div id='overlay' style='display:none;z-index:999;position:fixed;inset:0;background:rgba(0,0,0,.45);align-items:center;justify-content:center;z-index:999'>
-<div style='background:var(--box);width:min(92vw,430px);border-radius:24px;padding:20px'>
-<div style='font-size:30px;font-weight:bold'>⚙️ Pengaturan</div><hr>
-<div style='color:#1da1f2;font-weight:bold;margin:16px 0'>1. Tampilan</div>
-<div style='margin-bottom:10px'>Mode Tema</div>
-<div style='display:flex;background:#334155;border-radius:16px;padding:4px'>
-<button id='bDark' onclick='applyTheme(false)' style='flex:1;padding:14px;border:0;border-radius:12px'>🌙 Gelap</button>
-<button id='bLight' onclick='applyTheme(true)' style='flex:1;padding:14px;border:0;border-radius:12px'>☀️ Terang</button>
-</div>
-<hr>
-<div style='color:#1da1f2;font-weight:bold;margin:16px 0'>2. Background</div>
-<select id='bgSelect' onchange='applyBackground(this.value)' style='width:100%;padding:12px;border-radius:10px;background:var(--input);color:var(--text)'>
-<option value=''>Default</option>
-<option value='background/Foto_V1.jpg'>Foto 1</option>
-<option value='background/Foto_V2.jpg'>Foto 2</option>
-<option value='background/Foto_V3.jpg'>Foto 3</option>
-<option value='background/Foto_V4.jpg'>Foto 4</option>
-<option value='background/Foto_V5.jpg'>Foto 5</option>
-</select>
-</div></div><h2 style="text-align:center;margin-bottom:50px;">KALKULATOR</h2>
-<div class=grid><input id=j1 placeholder=Jam><input id=m1 placeholder=Menit><input id=p1 placeholder=%></div><br>
-<div class=grid><input id=j2 placeholder=Jam><input id=m2 placeholder=Menit><input id=p2 placeholder=%></div>
-<button class=big onclick='tambah()'>🧮 Hitung</button>
-<div class=row>
-<button class=g onclick='backup()'>📦 Cadangan</button>
-<button class=o onclick='file.click()'>📂 Pulihkan</button>
-<button class=r onclick='hapusSemua()'>🗑 Hapus Semua</button>
-</div>
-<input id=file type=file hidden accept=.json onchange='restore(event)'>
-<table><thead><tr><th>🕒</th><th>🔋</th><th>🗑️</th></tr></thead><tbody id=tb></tbody></table>
-</div>
-<script>
-let data=JSON.parse(localStorage.getItem('riwayat')||'[]');
+  </style>
+ </head>
+ <body>
+  <div class="box">
+   <div class="mode-btn" id="gearBtn" onclick="toggleSettings()">
+    ⚙️
+   </div>
+   <div id="overlay" style="display:none;z-index:999;position:fixed;inset:0;background:rgba(0,0,0,.45);align-items:center;justify-content:center;z-index:999">
+    <div style="background:var(--box);width:min(92vw,430px);border-radius:24px;padding:20px">
+     <div style="font-size:30px;font-weight:bold">
+      ⚙️ Pengaturan
+     </div>
+     <hr/>
+     <div style="color:#1da1f2;font-weight:bold;margin:16px 0">
+      1. Tampilan
+     </div>
+     <div style="margin-bottom:10px">
+      Mode Tema
+     </div>
+     <div style="display:flex;background:#334155;border-radius:16px;padding:4px">
+      <button id="bDark" onclick="applyTheme(false)" style="flex:1;padding:14px;border:0;border-radius:12px">
+       🌙 Gelap
+      </button>
+      <button id="bLight" onclick="applyTheme(true)" style="flex:1;padding:14px;border:0;border-radius:12px">
+       ☀️ Terang
+      </button>
+     </div>
+     <hr/>
+     <div style="color:#1da1f2;font-weight:bold;margin:16px 0">
+      2. Background
+     </div>
+     <select id="bgSelect" onchange="applyBackground(this.value)" style="width:100%;padding:12px;border-radius:10px;background:var(--input);color:var(--text)">
+      <option value="">
+       Default
+      </option>
+      <option value="background/Foto_V1.jpg">
+       Foto 1
+      </option>
+      <option value="background/Foto_V2.jpg">
+       Foto 2
+      </option>
+      <option value="background/Foto_V3.jpg">
+       Foto 3
+      </option>
+      <option value="background/Foto_V4.jpg">
+       Foto 4
+      </option>
+      <option value="background/Foto_V5.jpg">
+       Foto 5
+      </option>
+     </select>
+
+<hr/>
+<div style="color:#1da1f2;font-weight:bold;margin:16px 0">3. GitHub Backup</div>
+<div style="margin-bottom:8px">GitHub Token</div>
+<input id="githubToken" type="password" placeholder="Masukkan GitHub Token" style="width:100%;padding:12px;border-radius:10px;background:var(--input);color:var(--text);margin-bottom:14px">
+<div style="margin-bottom:8px">Repository (user/repo)</div>
+<input id="githubRepo" placeholder="username/repository" style="width:100%;padding:12px;border-radius:10px;background:var(--input);color:var(--text);margin-bottom:14px">
+<button style="width:100%;padding:14px;border:0;border-radius:12px;background:#334155;color:#fff;font-size:18px" onclick="saveGithub()">💾 Simpan GitHub</button>
+
+    </div>
+   </div>
+   <h2 style="text-align:center;margin-bottom:50px;">
+    KALKULATOR
+   </h2>
+   <div class="grid">
+    <input id="j1" placeholder="Jam"/>
+    <input id="m1" placeholder="Menit"/>
+    <input id="p1" placeholder="%"/>
+   </div>
+   <br/>
+   <div class="grid">
+    <input id="j2" placeholder="Jam"/>
+    <input id="m2" placeholder="Menit"/>
+    <input id="p2" placeholder="%"/>
+   </div>
+   <button class="big" onclick="tambah()">
+    🧮 Hitung
+   </button>
+   <div class="row">
+    <button class="g" onclick="githubBackup()">
+     📦 Cadangan
+    </button>
+    <button class="o" onclick="file.click()">
+     📂 Pulihkan
+    </button>
+    <button class="r" onclick="hapusSemua()">
+     🗑 Hapus Semua
+    </button>
+   </div>
+   <input accept=".json" hidden="" id="file" onchange="githubRestore()" type="file"/>
+   <table>
+    <thead>
+     <tr>
+      <th>
+       🕒
+      </th>
+      <th>
+       🔋
+      </th>
+      <th>
+       🗑️
+      </th>
+     </tr>
+    </thead>
+    <tbody id="tb">
+    </tbody>
+   </table>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js">
+function saveGithub(){
+ localStorage.setItem("githubToken",document.getElementById("githubToken").value);
+ localStorage.setItem("githubRepo",document.getElementById("githubRepo").value);
+ alert("Pengaturan GitHub berhasil disimpan.");
+}
+window.addEventListener("load",()=>{
+ const t=localStorage.getItem("githubToken")||"";
+ const r=localStorage.getItem("githubRepo")||"";
+ const gt=document.getElementById("githubToken");
+ const gr=document.getElementById("githubRepo");
+ if(gt)gt.value=t;
+ if(gr)gr.value=r;
+});
+
+
+async function githubBackup(){
+ const token=localStorage.getItem("githubToken")||"";
+ const repo=localStorage.getItem("githubRepo")||"";
+ if(!token||!repo){alert("Isi GitHub Token dan Repository terlebih dahulu.");return;}
+ const content=(typeof LZString!=="undefined")?LZString.compressToBase64(JSON.stringify(data)):btoa(JSON.stringify(data));
+ const path="riwayat-kalkulator.json";
+ const api=`https://api.github.com/repos/${repo}/contents/${path}`;
+ let sha=null;
+ try{
+   const g=await fetch(api,{headers:{Authorization:`Bearer ${token}`}});
+   if(g.ok){sha=(await g.json()).sha;}
+ }catch(e){}
+ const body={message:"Update backup",content:btoa(unescape(encodeURIComponent(content)))};
+ if(sha) body.sha=sha;
+ const r=await fetch(api,{
+   method:"PUT",
+   headers:{
+     "Authorization":`Bearer ${token}`,
+     "Accept":"application/vnd.github+json",
+     "Content-Type":"application/json"
+   },
+   body:JSON.stringify(body)
+ });
+ if(r.ok) alert("Backup berhasil dikirim ke GitHub.");
+ else alert("Backup gagal: "+await r.text());
+}
+async function githubRestore(){
+ const token=localStorage.getItem("githubToken")||"";
+ const repo=localStorage.getItem("githubRepo")||"";
+ if(!token||!repo){alert("Isi GitHub Token dan Repository terlebih dahulu.");return;}
+ const api=`https://api.github.com/repos/${repo}/contents/riwayat-kalkulator.json`;
+ const r=await fetch(api,{headers:{Authorization:`Bearer ${token}`}});
+ if(!r.ok){alert("Backup GitHub tidak ditemukan.");return;}
+ const j=await r.json();
+ const txt=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
+ const raw=(typeof LZString!=="undefined")?LZString.decompressFromBase64(txt):atob(txt);
+ data=JSON.parse(raw);
+ simpan();
+ render();
+ alert("Data berhasil dipulihkan.");
+}
+
+</script>
+  <script>
+   let data=JSON.parse(localStorage.getItem('riwayat')||'[]');
 function simpan(){localStorage.setItem('riwayat',JSON.stringify(data))}
 function render(){tb.innerHTML='';if(!data.length){tb.innerHTML='<tr><td colspan=3>Belum ada riwayat</td></tr>';return;}
 data.forEach((x,i)=>tb.innerHTML+=`<tr><td>${x.j} j, ${x.m} mnt</td><td>${x.p}%</td><td><button class="del r" onclick="hapusSatu(${i})">🗑</button></td></tr>`);}
@@ -96,8 +234,8 @@ function syncBtns(){let l=document.body.classList.contains('light');bLight.style
 bDark.style.background=!l?'#1da1f2':'transparent';bDark.style.color=!l?'#fff':'';}
 if(localStorage.getItem('mode')==='light')document.body.classList.add('light');
 render();}}
-function backup(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data)],{type:'application/json'}));a.download='backup.json';a.click();}
-function restore(e){let fr=new FileReader();fr.onload=()=>{data=JSON.parse(fr.result);simpan();
+function backup(){let c=LZString.compressToBase64(JSON.stringify(data));let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([c],{type:'application/json'}));a.download='riwayat-kalkulator.json';a.click();}
+function restore(e){let fr=new FileReader();fr.onload=()=>{let t=fr.result;let d=LZString.decompressFromBase64(t);data=JSON.parse(d||t);simpan();
 const btn=document.getElementById('modeBtn');
 if(localStorage.getItem('mode')==='light'){document.body.classList.add('light');btn.textContent='☀️';}
 function toggleMode(){document.body.classList.toggle('light');let l=document.body.classList.contains('light');localStorage.setItem('mode',l?'light':'dark');btn.textContent=l?'☀️':'🌙';}
@@ -135,5 +273,64 @@ window.addEventListener("load",()=>{
  const s=document.getElementById("bgSelect");
  if(s) s.value=p;
 });
+  
+function saveGithub(){
+ localStorage.setItem("githubToken",document.getElementById("githubToken").value);
+ localStorage.setItem("githubRepo",document.getElementById("githubRepo").value);
+ alert("Pengaturan GitHub berhasil disimpan.");
+}
+window.addEventListener("load",()=>{
+ const t=localStorage.getItem("githubToken")||"";
+ const r=localStorage.getItem("githubRepo")||"";
+ const gt=document.getElementById("githubToken");
+ const gr=document.getElementById("githubRepo");
+ if(gt)gt.value=t;
+ if(gr)gr.value=r;
+});
 
-</script></body></html>
+
+async function githubBackup(){
+ const token=localStorage.getItem("githubToken")||"";
+ const repo=localStorage.getItem("githubRepo")||"";
+ if(!token||!repo){alert("Isi GitHub Token dan Repository terlebih dahulu.");return;}
+ const content=(typeof LZString!=="undefined")?LZString.compressToBase64(JSON.stringify(data)):btoa(JSON.stringify(data));
+ const path="riwayat-kalkulator.json";
+ const api=`https://api.github.com/repos/${repo}/contents/${path}`;
+ let sha=null;
+ try{
+   const g=await fetch(api,{headers:{Authorization:`Bearer ${token}`}});
+   if(g.ok){sha=(await g.json()).sha;}
+ }catch(e){}
+ const body={message:"Update backup",content:btoa(unescape(encodeURIComponent(content)))};
+ if(sha) body.sha=sha;
+ const r=await fetch(api,{
+   method:"PUT",
+   headers:{
+     "Authorization":`Bearer ${token}`,
+     "Accept":"application/vnd.github+json",
+     "Content-Type":"application/json"
+   },
+   body:JSON.stringify(body)
+ });
+ if(r.ok) alert("Backup berhasil dikirim ke GitHub.");
+ else alert("Backup gagal: "+await r.text());
+}
+async function githubRestore(){
+ const token=localStorage.getItem("githubToken")||"";
+ const repo=localStorage.getItem("githubRepo")||"";
+ if(!token||!repo){alert("Isi GitHub Token dan Repository terlebih dahulu.");return;}
+ const api=`https://api.github.com/repos/${repo}/contents/riwayat-kalkulator.json`;
+ const r=await fetch(api,{headers:{Authorization:`Bearer ${token}`}});
+ if(!r.ok){alert("Backup GitHub tidak ditemukan.");return;}
+ const j=await r.json();
+ const txt=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
+ const raw=(typeof LZString!=="undefined")?LZString.decompressFromBase64(txt):atob(txt);
+ data=JSON.parse(raw);
+ simpan();
+ render();
+ alert("Data berhasil dipulihkan.");
+}
+
+</script>
+ </body>
+</html>
