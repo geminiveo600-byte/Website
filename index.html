@@ -116,7 +116,7 @@ footer{
 }
 
 :root{--bg:#071020;--text:#fff;--card:#162234}
-body{background:var(--bg)!important;color:var(--text)!important}
+body{background-color:var(--bg)!important;color:var(--text)!important;background-repeat:no-repeat;background-position:center;background-size:cover;background-attachment:fixed}
 .card{background:var(--card)!important}
 body.light{--bg:#f5f7fb;--text:#111;--card:#fff}
 #themeBtn{position:fixed;top:15px;right:15px;padding:8px 12px;border-radius:20px}
@@ -202,8 +202,10 @@ s.style.zIndex=1001;
 s.onclick=()=>{pnl.style.display=pnl.style.display==='flex'?'none':'flex';sync();};
 darkBtn.onclick=()=>{document.body.classList.remove('light');localStorage.theme='dark';sync();};
 lightBtn.onclick=()=>{document.body.classList.add('light');localStorage.theme='light';sync();};
+if(tg){
 tg.checked=document.body.classList.contains('light');
 tg.onchange=()=>{document.body.classList.toggle('light',tg.checked);localStorage.theme=tg.checked?'light':'dark';};
+}
 
 const bg=document.getElementById('bgSelect'),
 br=document.getElementById('bright'),
@@ -211,7 +213,7 @@ bl=document.getElementById('blur'),
 ov=document.getElementById('overlay');
 function applyBg(){
 const p=bg.value;
-document.body.style.backgroundImage=p?`url('${p}')`:"";
+if(p){document.body.style.backgroundImage=`url('${p}')`;}else{document.body.style.backgroundImage='none';}
 document.body.style.backgroundSize="cover";
 document.body.style.backgroundPosition="center";
 document.body.style.filter=`brightness(${br.value}%)`;
