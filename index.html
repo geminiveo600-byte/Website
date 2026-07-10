@@ -129,6 +129,21 @@ backdrop-filter:blur(var(--blur,0px));
 pointer-events:none;
 z-index:-1;
 }
+
+.rainbow-text{
+background:linear-gradient(90deg,#ff0000,#ff7f00,#ffff00,#00ff00,#00bfff,#0000ff,#8b00ff,#ff0000);
+background-size:400% 100%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+background-clip:text;
+color:transparent!important;
+animation:rainbowMove 4s linear infinite;
+}
+@keyframes rainbowMove{
+0%{background-position:0% 50%;}
+100%{background-position:400% 50%;}
+}
+
 </style>
 <style>
 #settingsBtn{position:fixed;top:15px;right:15px;background:transparent;border:none;padding:0;font-size:28px;cursor:pointer;z-index:100;}
@@ -137,14 +152,14 @@ body:not(.light) #panel{background:#162234;color:#fff}
 </style></head>
 <body><button id="settingsBtn">⚙️</button><div id="panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;align-items:center;justify-content:center">
 <div style="background:#162234;color:#fff;width:min(92vw,430px);border-radius:24px;padding:20px">
-<div style="font-size:30px;font-weight:bold">⚙️ Pengaturan</div><hr style="margin:12px 0;border-color:#334155">
+<div style="font-size:30px;font-weight:bold">⚙️ Pengaturan</div><hr style="margin:12px 0;border-color:#334155"/>
 <div style="color:#1da1f2;font-weight:bold;margin:10px 0">1. Tampilan</div>
 <div>Mode Tema</div>
 <div style="display:flex;background:#334155;border-radius:14px;padding:4px;margin-top:8px">
 <button id="darkBtn" style="flex:1;padding:12px">🌙 Gelap</button>
 <button id="lightBtn" style="flex:1;padding:12px">☀️ Terang</button>
 </div>
-<hr style="margin:12px 0;border-color:#334155">
+<hr style="margin:12px 0;border-color:#334155"/>
 <div style="color:#1da1f2;font-weight:bold;margin:10px 0">2. Background Foto</div>
 <div style="margin:10px 0">Pilih Gambar</div>
 <select id="bgSelect" style="width:100%;padding:16px;border-radius:22px;background:#2b3546;color:#fff;border:2px solid #1da1f2">
@@ -156,38 +171,48 @@ body:not(.light) #panel{background:#162234;color:#fff}
 <option value="background/Foto_V5.jpg">Foto 5</option>
 </select>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;margin-top:18px">
-<label>Kecerahan Foto</label><input id="bright" type="range" min="50" max="150" value="100">
-<label>Blur Foto</label><input id="blur" type="range" min="0" max="20" value="0">
-<label>Gelap Overlay</label><input id="overlay" type="range" min="0" max="80" value="0">
+<label>Kecerahan Foto</label><input id="bright" max="150" min="50" type="range" value="100"/>
+<label>Blur Foto</label><input id="blur" max="20" min="0" type="range" value="0"/>
+<label>Gelap Overlay</label><input id="overlay" max="80" min="0" type="range" value="0"/>
 </div>
 </div></div>
 <header>
 <h1>📱 Catat Pemakaian HP</h1>
-<p>Pilih aplikasi yang ingin kamu gunakan</p>
+<p class="rainbow-text">Pilih aplikasi yang ingin kamu gunakan</p>
 </header>
 <div class="container"><div class="card">
 <div class="icon"><img alt="Pemakaian HP" src="img/pemakaian-hp.png"/></div>
-<h2 class="green">Pemakaian HP</h2>
-<p>Catatan pemakaian HP secara umum.</p>
-<a class="open green" href="Pemakaian-Hp.html">            Buka →        </a>
+<h2 class="green rainbow-text">Pemakaian HP</h2>
+<p class="rainbow-text">Catatan pemakaian HP secara umum.</p>
+<a class="open green rainbow-text" href="Pemakaian-Hp.html">            Buka →        </a>
+</div>
+<div class="card">
+<div class="icon"><img alt="Kalkulator" src="img/tiktok-kalkulator.png"/></div>
+<h2 class="blue rainbow-text">Kalkulator</h2>
+<p class="rainbow-text">
+            Tempat hitung pemakaian baterai smartphone.
+        </p>
+<a class="open blue rainbow-text" href="Kalkulator.html">
+            Buka →
+        </a>
 </div>
 <div class="card">
 <div class="icon"><img alt="TikTok" src="img/tiktok-biasa.png"/></div>
-<h2 class="blue">TikTok Biasa</h2>
-<p>
+<h2 class="blue rainbow-text">TikTok Biasa</h2>
+<p class="rainbow-text">
             Catatan pemakaian untuk aplikasi TikTok versi reguler.
         </p>
-<a class="open blue" href="Tiktok-Biasa.html">
+<a class="open blue rainbow-text" href="Tiktok-Biasa.html">
             Buka →
         </a>
 </div>
 <div class="card">
 <div class="icon"><img alt="TikTok Lite" src="img/tiktok-lite.png"/></div>
-<h2 class="yellow">TikTok Lite</h2>
-<p>
+<h2 class="yellow rainbow-text">TikTok Lite</h2>
+<p class="rainbow-text">
             Catatan pemakaian untuk aplikasi TikTok Lite.
         </p>
-<a class="open yellow" href="Tiktok-Lite.html">
+<a class="open yellow rainbow-text" href="Tiktok-Lite.html">
             Buka →
         </a>
 </div>
