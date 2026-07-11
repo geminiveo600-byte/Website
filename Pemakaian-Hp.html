@@ -406,7 +406,7 @@
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      let dataList = JSON.parse(localStorage.getItem('backup-pemakaian-lite') || '[]');
+      let dataList = JSON.parse(localStorage.getItem('backup-pemakaian') || '[]');
 
 
 
@@ -538,7 +538,7 @@ function toggleSettings() {
         };
         if(!data.tanggal){alert('Isi tanggal terlebih dahulu!');return;}
         dataList.unshift(data);
-        localStorage.setItem('backup-pemakaian-lite', JSON.stringify(dataList));
+        localStorage.setItem('backup-pemakaian', JSON.stringify(dataList));
         renderRiwayat();
       }
 
@@ -555,7 +555,7 @@ function toggleSettings() {
       window.hapusSatu = function(id) {
         if (confirm('Hapus data ini?')) {
           dataList = dataList.filter(function(item) { return item.id!== id; });
-          localStorage.setItem('backup-pemakaian-lite', JSON.stringify(dataList));
+          localStorage.setItem('backup-pemakaian', JSON.stringify(dataList));
           renderRiwayat();
         }
       }
@@ -563,7 +563,7 @@ function toggleSettings() {
       function hapusSemua() {
         if (confirm('Yakin hapus SEMUA data? Nggak bisa dibalikin lho!')) {
           dataList = [];
-          localStorage.setItem('backup-pemakaian-lite', JSON.stringify(dataList));
+          localStorage.setItem('backup-pemakaian', JSON.stringify(dataList));
           renderRiwayat();
         }
       }
@@ -643,7 +643,7 @@ if(!token||!repo){alert('Isi GitHub Token dan Repository di Pengaturan.');return
 
         if(Array.isArray(imported)){
           dataList = imported;
-          localStorage.setItem('backup-pemakaian-lite', JSON.stringify(dataList));
+          localStorage.setItem('backup-pemakaian', JSON.stringify(dataList));
           renderRiwayat();
           alert('Data berhasil dipulihkan dari GitHub!');
         }
