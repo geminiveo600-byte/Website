@@ -78,8 +78,8 @@
     }
 
     h1 {
-      color: var(--primary);
-      font-size: 1.3rem;
+      color:#ff0000;
+      font-size:30px;;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -288,7 +288,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <h1 id="judulApp">📱 Catat Pemakaian HP</h1>
+      <h1 id="judulApp">📱 Catatan Pemakaian HP</h1>
       <button class="header-btn" id="settingBtn" type="button" title="Pengaturan">⚙️</button>
     </div>
 
@@ -505,10 +505,10 @@ function toggleSettings() {
       function gantiBgPreset(url) {
         if (url === 'none' || url === '') {
           document.body.style.backgroundImage = 'none';
-          localStorage.removeItem('customBg');
+          localStorage.removeItem('tiktokbiasa_customBg');
         } else {
           document.body.style.backgroundImage = 'url(' + url + ')';
-          localStorage.setItem('customBg', url);
+          localStorage.setItem('tiktokbiasa_customBg', url);
         }
       }
 
@@ -552,12 +552,12 @@ function toggleSettings() {
       }
 
       function resetBgSettings() {
-        localStorage.removeItem('overlayLight');
-        localStorage.removeItem('overlayDark');
-        localStorage.removeItem('bgBlur');
-        localStorage.removeItem('bgBrightness');
-        localStorage.removeItem('bgPosition');
-        localStorage.removeItem('customBg');
+        localStorage.removeItem('tiktokbiasa_overlayLight');
+        localStorage.removeItem('tiktokbiasa_overlayDark');
+        localStorage.removeItem('tiktokbiasa_bgBlur');
+        localStorage.removeItem('tiktokbiasa_bgBrightness');
+        localStorage.removeItem('tiktokbiasa_bgPosition');
+        localStorage.removeItem('tiktokbiasa_customBg');
         bgSelect.value = 'none';
         document.body.style.backgroundImage = 'none';
         loadAllSettings();
@@ -720,7 +720,7 @@ if(!token||!repo){alert('Isi GitHub Token dan Repository di Pengaturan.');return
         const theme = localStorage.getItem('theme') || 'dark';
         setTheme(theme);
 
-        const savedBg = localStorage.getItem('customBg');
+        const savedBg = localStorage.getItem('tiktokbiasa_customBg');
         if (savedBg) {
           document.body.style.backgroundImage = 'url(' + savedBg + ')';
           bgSelect.value = savedBg;
