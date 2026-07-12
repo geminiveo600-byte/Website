@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waktu Pakai Smartphone</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --input: #334155;
+      --text: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --primary: #0ea5e9;
+      --green: #22c55e;
+      --orange: #f97316;
+      --red: #ef4444;
+      --border: #334155;
+      --overlay-dark: 0.88;
+      --overlay-light: 0.65;
+      --overlay: rgba(15, 23, 42, var(--overlay-dark));
+      --bg-blur: 0px;
+      --bg-brightness: 1;
+      --bg-position: center;
+    }
+
+    body.light {
+      --bg: #f1f5f9;
+      --card: #ffffff;
+      --input: #e2e8f0;
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --border: #cbd5e1;
+      --overlay: rgba(241, 245, 249, var(--overlay-light));
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      padding: 16px;
+      transition: background 0.3s, color 0.3s;
+      background-size: cover;
+      background-position: var(--bg-position);
+      background-attachment: fixed;
+      min-height: 100vh;
+      backdrop-filter: blur(var(--bg-blur)) brightness(var(--bg-brightness));
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--overlay);
+      z-index: -1;
+      transition: background 0.3s;
+      pointer-events: none;
+    }
+
+   .container {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+   .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      color:#ff0000;
+      font-size:30px;;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+   .header-btn {
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1rem;
+    }
+
+    label {
+      display: block;
+      margin: 16px 0 6px;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      background: var(--input);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    input:focus, select:focus { outline: 2px solid var(--primary); }
+    input[type="range"] { padding: 0; height: 6px; }
+
+   .row { display: flex; gap: 12px; }
+   .row > div { flex: 1; }
+
+   .btn {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+   .btn-primary { background: var(--primary); color: white; }
+   .btn-green { background: var(--green); color: white; }
+   .btn-orange { background: var(--orange); color: white; }
+   .btn-red { background: var(--red); color: white; }
+   .btn-secondary { background: var(--input); color: var(--text); }
+
+   .btn-group { display: flex; gap: 8px; margin-top: 8px; }
+   .btn-group.btn { margin-top: 0; flex: 1; }
+
+   .section {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 24px;
+      backdrop-filter: blur(10px);
+    }
+
+   .section h2 {
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: space-between;
+    }
+
+   .collapse-btn {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+   .setting-group {
+      border-top: 1px solid var(--border);
+      padding-top: 16px;
+      margin-top: 16px;
+    }
+   .setting-group:first-child {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+   .setting-group-title {
+      color: var(--primary);
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 12px;
+    }
+
+   .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 12px 0;
+    }
+   .setting-row label { margin: 0; flex: 1; }
+   .setting-row input[type="range"] { width: 50%; }
+   .setting-row select { width: 50%; }
+
+   .theme-switch {
+      display: flex;
+      background: var(--input);
+      border-radius: 8px;
+      padding: 4px;
+      gap: 4px;
+    }
+   .theme-switch button {
+      flex: 1;
+      padding: 8px;
+      border: none;
+      background: none;
+      color: var(--text-secondary);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+   .theme-switch button.active {
+      background: var(--primary);
+      color: white;
+    }
+
+   .hidden { display: none!important; }
+
+   .legend {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+   .legend-title {
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: 8px;
+      grid-column: 1 / -1;
+    }
+
+   .dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+   .dot-blue { background: #3b82f6; }
+   .dot-yellow { background: #eab308; }
+   .dot-red { background: #ef4444; }
+
+   .table-container {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+   .riwayat-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+      min-width: 650px;
+    }
+   .riwayat-table th {
+      background: var(--input);
+      color: var(--primary);
+      padding: 10px 6px;
+      text-align: left;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+    }
+   .riwayat-table td {
+      padding: 8px 6px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      white-space: nowrap;
+    }
+   .riwayat-table tr:nth-child(even) {
+      background: rgba(51, 65, 85, 0.3);
+    }
+   .hapus-cell {
+      text-align: center;
+    }
+   .hapus-btn-small {
+      background: var(--red);
+      border: none;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 id="judulApp">📱 Waktu Pakai Smartphone</h1>
+      <button class="header-btn" id="settingBtn" type="button" title="Pengaturan">⚙️</button>
+    </div>
+
+    <div class="section hidden" id="settingsPanel">
+      <h2>⚙️ Pengaturan <button class="collapse-btn" id="closeBtn" type="button">✕</button></h2>
+
+      <div class="setting-group">
+  <div class="setting-group-title">1. Tampilan</div>
+
+  <label>Mode Tema</label>
+  <div class="theme-switch">
+    <button id="darkBtn" class="active" type="button">🌙 Gelap</button>
+    <button id="lightBtn" type="button">☀️ Terang</button>
+  </div>
+</div>
+
+      <div class="setting-group">
+        <div class="setting-group-title">2. Background Foto</div>
+        <label>Pilih Gambar</label>
+        <select id="bgSelect">
+          <option value="none">Tanpa Gambar</option>
+<option value="background/Foto_V1.jpg">Foto 1</option>
+<option value="background/Foto_V2.jpg">Foto 2</option>
+<option value="background/Foto_V3.jpg">Foto 3</option>
+<option value="background/Foto_V4.jpg">Foto 4</option>
+<option value="background/Foto_V5.jpg">Foto 5</option>
+        </select>
+
+        <div class="setting-row">
+          <label>Kecerahan Foto</label>
+          <input type="range" min="0.3" max="1.2" step="0.1" id="brightRange">
+        </div>
+
+        <div class="setting-row">
+          <label>Blur Foto</label>
+          <input type="range" min="0" max="10" step="1" id="blurRange">
+        </div>
+
+        <div class="setting-row">
+          <label>Gelap Overlay</label>
+          <input type="range" min="0.3" max="0.95" step="0.05" id="overlayRange">
+        </div>
+
+        <label>Posisi Gambar</label>
+        <select id="posSelect">
+          <option value="center">Tengah</option>
+          <option value="top">Atas</option>
+          <option value="bottom">Bawah</option>
+          <option value="left">Kiri</option>
+          <option value="right">Kanan</option>
+        </select>
+
+        <button class="btn btn-secondary" id="resetBgBtn" type="button" style="margin-top:16px">🔄 Reset Pengaturan BG</button>
+      
+<div class="setting-group">
+<div class="setting-group-title">3. GitHub Backup</div>
+<label>GitHub Token</label>
+<input type="password" id="githubToken" placeholder="Masukkan GitHub Token">
+<label>Repository (user/repo)</label>
+<input type="text" id="githubRepo" placeholder="username/repository">
+<button class="btn btn-secondary" type="button" onclick="simpanGithubSetting()">💾 Simpan GitHub</button>
+</div>
+
+</div>
+    </div>
+
+    <label>Tanggal</label><input type="date" id="tanggal">
+
+    
+
+    <div class="row"><div><label>Jam</label><input type="number" id="durJam" min="0"></div><div><label>Menit</label><input type="number" id="durMenit" min="0" max="59"></div></div>
+
+    <label>Baterai (%)</label>
+    <input type="number" id="baterai" placeholder="80">
+
+    <label>⚡ Cas</label><select id="cas"><option>Yes</option><option>No</option></select>
+
+    
+<label>🌐 Jenis Koneksi</label><select id="jenisKoneksi"><option>WiFi</option><option>Data</option></select>
+<button class="btn btn-primary" id="simpanBtn" type="button">💾 Simpan Catatan</button>
+
+    <div class="btn-group">
+      <button class="btn btn-green" id="cadanganBtn" type="button">📦 Cadangan</button>
+      <button class="btn btn-orange" id="pulihkanBtn" type="button">📂 Pulihkan</button>
+      <button class="btn btn-red" id="hapusSemuaBtn" type="button">🗑️ Hapus Semua</button>
+    </div>
+
+    <div class="section">
+      <h2>📊 Riwayat Catatan</h2>
+      <div class="table-container">
+        <table class="riwayat-table" id="riwayatTable">
+          <thead>
+            <tr>
+              <th>#️⃣</th>
+              <th>📅Tanggal</th>
+              <th>⏳Waktu</th><th>🔋Baterai</th><th>⚡Cas</th><th>🌐Koneksi</th>
+              <th>🗑️Hapus</th>
+            </tr>
+          </thead>
+          <tbody id="riwayatBody">
+            <tr><td colspan="9" style="text-align:center;color:var(--text-secondary)">Belum ada riwayat</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="legend">
+        <div class="legend-title">Keterangan Icon:</div>
+<div>#️⃣ Nomor urut</div><div>📅 Tanggal</div><div>⏳ Waktu</div><div>🔋 Baterai</div><div>⚡ Cas (Yes/No)</div><div>🌐 Koneksi (WiFi/Data)</div><div>🗑️ Hapus 1 data</div></div>
+    </div>
+
+    
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      let dataList = JSON.parse(localStorage.getItem('backup-pemakaian') || '[]');
+
+
+
+      const settingBtn = document.getElementById('settingBtn');
+      const closeBtn = document.getElementById('closeBtn');
+      const darkBtn = document.getElementById('darkBtn');
+      const lightBtn = document.getElementById('lightBtn');
+      const bgSelect = document.getElementById('bgSelect');
+      const brightRange = document.getElementById('brightRange');
+      const blurRange = document.getElementById('blurRange');
+      const overlayRange = document.getElementById('overlayRange');
+      const posSelect = document.getElementById('posSelect');
+      const resetBgBtn = document.getElementById('resetBgBtn');
+      const simpanBtn = document.getElementById('simpanBtn');
+      const cadanganBtn = document.getElementById('cadanganBtn');
+      const pulihkanBtn = document.getElementById('pulihkanBtn');
+      const hapusSemuaBtn = document.getElementById('hapusSemuaBtn');
+      
+
+      settingBtn.addEventListener('click', toggleSettings);
+      closeBtn.addEventListener('click', toggleSettings);
+      darkBtn.addEventListener('click', function() { setTheme('dark'); });
+      lightBtn.addEventListener('click', function() { setTheme('light'); });
+      bgSelect.addEventListener('change', function(e) { gantiBgPreset(e.target.value); });
+      brightRange.addEventListener('input', function(e) { aturBrightness(e.target.value); });
+      blurRange.addEventListener('input', function(e) { aturBlur(e.target.value); });
+      overlayRange.addEventListener('input', function(e) { aturOverlay(e.target.value); });
+      posSelect.addEventListener('change', function(e) { aturPosition(e.target.value); });
+      resetBgBtn.addEventListener('click', resetBgSettings);
+      simpanBtn.addEventListener('click', simpan);
+      cadanganBtn.addEventListener('click', cadangan);
+      pulihkanBtn.addEventListener('click', pulihkan);
+      hapusSemuaBtn.addEventListener('click', hapusSemua);
+function toggleSettings() {
+        const panel = document.getElementById('settingsPanel');
+        panel.classList.toggle('hidden');
+        if (!panel.classList.contains('hidden')) {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+
+      function setTheme(mode) {
+        if (mode === 'light') {
+          document.body.classList.add('light');
+          lightBtn.classList.add('active');
+          darkBtn.classList.remove('active');
+          localStorage.setItem('theme', 'light');
+        } else {
+          document.body.classList.remove('light');
+          darkBtn.classList.add('active');
+          lightBtn.classList.remove('active');
+          localStorage.setItem('theme', 'dark');
+        }
+        updateOverlay();
+      }
+
+      function gantiBgPreset(url) {
+        if (url === 'none' || url === '') {
+          document.body.style.backgroundImage = 'none';
+          localStorage.removeItem('customBg');
+        } else {
+          document.body.style.backgroundImage = 'url(' + url + ')';
+          localStorage.setItem('customBg', url);
+        }
+      }
+
+      function aturOverlay(val) {
+        const isLight = document.body.classList.contains('light');
+        if (isLight) {
+          document.documentElement.style.setProperty('--overlay-light', val);
+          localStorage.setItem('overlayLight', val);
+        } else {
+          document.documentElement.style.setProperty('--overlay-dark', val);
+          localStorage.setItem('overlayDark', val);
+        }
+      }
+
+      function aturBlur(val) {
+        document.documentElement.style.setProperty('--bg-blur', val + 'px');
+        localStorage.setItem('bgBlur', val);
+      }
+
+      function aturBrightness(val) {
+        document.documentElement.style.setProperty('--bg-brightness', val);
+        localStorage.setItem('bgBrightness', val);
+      }
+
+      function aturPosition(val) {
+        document.documentElement.style.setProperty('--bg-position', val);
+        localStorage.setItem('bgPosition', val);
+      }
+
+      function updateOverlay() {
+        const isLight = document.body.classList.contains('light');
+        if (isLight) {
+          const val = localStorage.getItem('overlayLight') || 0.65;
+          overlayRange.value = val;
+          document.documentElement.style.setProperty('--overlay-light', val);
+        } else {
+          const val = localStorage.getItem('overlayDark') || 0.88;
+          overlayRange.value = val;
+          document.documentElement.style.setProperty('--overlay-dark', val);
+        }
+      }
+
+      function resetBgSettings() {
+        localStorage.removeItem('overlayLight');
+        localStorage.removeItem('overlayDark');
+        localStorage.removeItem('bgBlur');
+        localStorage.removeItem('bgBrightness');
+        localStorage.removeItem('bgPosition');
+        localStorage.removeItem('customBg');
+        bgSelect.value = 'none';
+        document.body.style.backgroundImage = 'none';
+        loadAllSettings();
+      }
+
+      
+      function simpan() {
+        const data = {
+          id: Date.now(),
+          tanggal: document.getElementById('tanggal').value,
+          jam: parseInt(document.getElementById('durJam').value||0),
+          menit: parseInt(document.getElementById('durMenit').value||0),
+          baterai: document.getElementById('baterai').value,
+          cas: document.getElementById('cas').value,
+          koneksi: document.getElementById('jenisKoneksi').value,
+
+        };
+        if(!data.tanggal){alert('Isi tanggal terlebih dahulu!');return;}
+        dataList.unshift(data);
+        localStorage.setItem('backup-pemakaian', JSON.stringify(dataList));
+        renderRiwayat();
+      }
+
+      function resetForm() {
+        document.getElementById('baterai').value = '';
+        document.getElementById('suhuLingkungan').value = '';
+        document.getElementById('suhuTerasa').value = '';
+        document.getElementById('kelembapan').value = '';
+        document.getElementById('tanggal').value=new Date().toISOString().slice(0,10);
+        document.getElementById('berakhir').value = '';
+        document.getElementById('versi').value = '– Pilih Versi –';
+      }
+
+      window.hapusSatu = function(id) {
+        if (confirm('Hapus data ini?')) {
+          dataList = dataList.filter(function(item) { return item.id!== id; });
+          localStorage.setItem('backup-pemakaian', JSON.stringify(dataList));
+          renderRiwayat();
+        }
+      }
+
+      function hapusSemua() {
+        if (confirm('Yakin hapus SEMUA data? Nggak bisa dibalikin lho!')) {
+          dataList = [];
+          localStorage.setItem('backup-pemakaian', JSON.stringify(dataList));
+          renderRiwayat();
+        }
+      }
+
+      function hitungMenit(mulai, berakhir) {
+        const start = new Date(mulai);
+        const end = new Date(berakhir);
+        return Math.round((end - start) / 60000);
+      }
+
+      function formatTanggal(str) {
+        const d = new Date(str);
+        return d.toLocaleDateString('id-ID', {day:'2-digit', month:'2-digit', year:'numeric'});
+      }
+
+      function formatJam(str) {
+        const d = new Date(str);
+        return d.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
+      }
+
+      function getVersiIcon(versi) {
+  if (versi.includes('44.2.3')) return '🔵';
+  if (versi.includes('44.3.2')) return '🟡';
+  return '❌';
+}
+
+      function renderRiwayat() {
+const tbody=document.getElementById('riwayatBody');
+if(!dataList.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center">Belum ada riwayat</td></tr>';return;}
+tbody.innerHTML=dataList.map((it,i)=>`<tr><td>${dataList.length-i}</td><td>${it.tanggal}</td><td>${(Number(it.jam)||0)*60+(Number(it.menit)||0)} menit</td><td>${it.baterai}%</td><td>${it.cas}</td><td>${it.koneksi||'-'}</td><td><button class="hapus-btn-small" onclick="hapusSatu(${it.id})">🗑️</button></td></tr>`).join('');
+}
+async function cadangan() {
+        const token=localStorage.getItem('githubToken')||'';
+const repo=localStorage.getItem('githubRepo')||'';
+if(!token||!repo){alert('Isi GitHub Token dan Repository di Pengaturan.');return;}
+
+        let sha = '';
+        try {
+          const cek = await fetch('https://api.github.com/repos/' + repo + '/contents/backup-pemakaian.json',{
+            headers:{Authorization:'token '+token}
+          });
+          if (cek.ok) sha = (await cek.json()).sha;
+        } catch(e){}
+
+        const res = await fetch('https://api.github.com/repos/' + repo + '/contents/backup-pemakaian.json',{
+          method:'PUT',
+          headers:{
+            Authorization:'token '+token,
+            'Content-Type':'application/json'
+          },
+          body:JSON.stringify({
+            message:'Backup otomatis dari aplikasi',
+            content:btoa(unescape(encodeURIComponent(LZString.compressToBase64(JSON.stringify(dataList))))),
+            sha:sha || undefined
+          })
+        });
+
+        if(res.ok) alert('Backup berhasil disimpan ke GitHub!');
+        else alert('Gagal backup ke GitHub!');
+      }
+
+      async function pulihkan() {
+        const token=localStorage.getItem('githubToken')||'';
+const repo=localStorage.getItem('githubRepo')||'';
+if(!token||!repo){alert('Isi GitHub Token dan Repository di Pengaturan.');return;}
+
+        const res = await fetch('https://api.github.com/repos/' + repo + '/contents/backup-pemakaian.json',{
+          headers:{Authorization:'token '+token}
+        });
+
+        if(!res.ok){ alert('Backup GitHub tidak ditemukan!'); return; }
+
+        const data = await res.json();
+        const compressed = decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+        const isi = LZString.decompressFromBase64(compressed);
+        const imported = JSON.parse(isi);
+
+        if(Array.isArray(imported)){
+          dataList = imported;
+          localStorage.setItem('backup-pemakaian', JSON.stringify(dataList));
+          renderRiwayat();
+          alert('Data berhasil dipulihkan dari GitHub!');
+        }
+      }
+
+      function loadAllSettings() {
+        const theme = localStorage.getItem('theme') || 'dark';
+        setTheme(theme);
+
+        const savedBg = localStorage.getItem('customBg');
+        if (savedBg) {
+          document.body.style.backgroundImage = 'url(' + savedBg + ')';
+          bgSelect.value = savedBg;
+        } else {
+          bgSelect.value = 'none';
+        }
+
+        const overlayLight = localStorage.getItem('overlayLight') || 0.65;
+        const overlayDark = localStorage.getItem('overlayDark') || 0.88;
+        document.documentElement.style.setProperty('--overlay-light', overlayLight);
+        document.documentElement.style.setProperty('--overlay-dark', overlayDark);
+
+        const blur = localStorage.getItem('bgBlur') || 0;
+        const brightness = localStorage.getItem('bgBrightness') || 1;
+        const position = localStorage.getItem('bgPosition') || 'center';
+
+        blurRange.value = blur;
+        brightRange.value = brightness;
+        posSelect.value = position;
+
+        aturBlur(blur);
+        aturBrightness(brightness);
+        aturPosition(position);
+        updateOverlay();
+      }
+
+      loadAllSettings();
+      renderRiwayat();
+      document.getElementById('tanggal').value=new Date().toISOString().slice(0,10);
+});
+  </script>
+<script>
+function simpanGithubSetting(){
+localStorage.setItem('githubToken',document.getElementById('githubToken').value);
+localStorage.setItem('githubRepo',document.getElementById('githubRepo').value);
+alert('Pengaturan GitHub disimpan.');
+}
+document.addEventListener('DOMContentLoaded',()=>{
+githubToken.value=localStorage.getItem('githubToken')||'';
+githubRepo.value=localStorage.getItem('githubRepo')||'';
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded',()=>{
+const b=document.getElementById('simpanBtn');
+if(!b)return;
+b.addEventListener('click',()=>{
+const j=parseInt(document.getElementById('durJam')?.value||0);
+const m=parseInt(document.getElementById('durMenit')?.value||0);
+localStorage.setItem('waktuMenitPreview',j*60+m);
+});
+});
+</script>
+
+</body>
+</html>
