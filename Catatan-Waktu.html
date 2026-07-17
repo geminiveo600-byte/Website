@@ -100,12 +100,27 @@ select{width:100%;padding:12px;border-radius:12px}
 <script>
 function openSettings(){ov.style.display='block';settings.style.display='block';}
 function closeSettings(){ov.style.display='none';settings.style.display='none';}
-function setBg(v){document.body.style.backgroundImage='url('+v+')';closeSettings();}
+function setBg(v){
+ document.body.style.backgroundImage='url('+v+')';
+ localStorage.setItem('bg',v);
+ closeSettings();
+}
 function setTheme(m){
-document.body.classList.toggle('light',m==='light');
-darkBtn.classList.toggle('active',m==='dark');
-lightBtn.classList.toggle('active',m==='light');
-closeSettings();
+ document.body.classList.toggle('light',m==='light');
+ darkBtn.classList.toggle('active',m==='dark');
+ lightBtn.classList.toggle('active',m==='light');
+ localStorage.setItem('theme',m);
+ closeSettings();
+}
+window.onload=function(){
+ const bg=localStorage.getItem('bg');
+ if(bg){document.body.style.backgroundImage='url('+bg+')';}
+ const th=localStorage.getItem('theme');
+ if(th){
+  document.body.classList.toggle('light',th==='light');
+  darkBtn.classList.toggle('active',th==='dark');
+  lightBtn.classList.toggle('active',th==='light');
+ }
 }
 </script>
 
