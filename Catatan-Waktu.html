@@ -45,8 +45,6 @@ tr:nth-child(even){
 
 
 body.light{
-    background:#ffffff !important;
-    background-image:none !important;
     color:#000;
 }
 body.light table{background:#fff;}
@@ -80,6 +78,7 @@ select{width:100%;padding:12px;border-radius:12px}
 <h3>2. Background</h3>
 <label>Pilih Gambar</label>
 <select onchange="setBg(this.value)">
+    <option value="none">Tanpa Gambar</option>
 <option value="background/Foto_V1.jpg">Foto 1</option>
 <option value="background/Foto_V2.jpg">Foto 2</option>
 <option value="background/Foto_V3.jpg">Foto 3</option>
