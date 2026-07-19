@@ -239,9 +239,6 @@
   height: 10px;
   border-radius: 50%;
 }
-   .dot-blue { background: #3b82f6; }
-   .dot-yellow { background: #eab308; }
-   .dot-red { background: #ef4444; }
 
    .table-container {
       overflow-x: auto;
@@ -355,7 +352,7 @@
 </div>
     </div>
 
-    <label>Versi TikTok</label>
+    <label>Pilih Tiktok Versi</label>
     <select id="versi">
       <option>– Pilih Versi –</option>
       <option>TikTok Lite v44.2.3</option>
@@ -401,7 +398,7 @@
             <tr>
               <th>#️⃣</th>
               <th>📅Tanggal</th>
-              <th>📱Versi</th>
+              <th>📱Lite</th>
               <th>⏰Jam M/A</th>
               <th>⏳Waktu</th>
               <th>🔋Baterai</th>
@@ -422,7 +419,7 @@
         <div class="legend-title">Keterangan Icon:</div>
         <div>#️⃣ Nomor urut</div>
         <div>📅 Tanggal</div>
-        <div>📱 TikTok lite versi</div>
+        <div>📱 TikTok lite</div>
         <div>⏰ Jam mulai-akhir</div>
         <div>⏳ Waktu pakai</div>
         <div>🔋 Baterai %</div>
@@ -431,15 +428,6 @@
         <div>🗑️ Hapus 1 data</div>
       </div>
     </div>
-
-    <div class="section">
-      <div class="legend">
-        <div class="legend-title">Keterangan Versi TikTok:</div>
-        <div><span class="dot dot-blue"></span>TikTok Lite v44.2.3</div>
-        <div><span class="dot dot-yellow"></span>TikTok Lite v44.3.2</div>
-      </div>
-    </div>
-  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -630,12 +618,6 @@ function toggleSettings() {
         return d.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
       }
 
-      function getVersiIcon(versi) {
-  if (versi.includes('44.2.3')) return '🔵';
-  if (versi.includes('44.3.2')) return '🟡';
-  return '❌';
-}
-
       function renderRiwayat() {
         const tbody = document.getElementById('riwayatBody');
         if (dataList.length === 0) {
@@ -647,7 +629,7 @@ function toggleSettings() {
           return '<tr>' +
             '<td>' + (dataList.length - index) + '</td>' +
             '<td>' + formatTanggal(item.mulai) + '</td>' +
-            '<td style="text-align:center">' + getVersiIcon(item.versi) + '</td>' +
+            '<td>' + item.versi.replace('TikTok Lite ', '') + '</td>' +
             '<td>' + formatJam(item.mulai) + '-' + formatJam(item.berakhir) + '</td>' +
             '<td>' + hitungMenit(item.mulai, item.berakhir) + ' mnt</td>' +
             '<td>' + (item.baterai || '-') + '%</td>' +
