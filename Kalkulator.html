@@ -125,15 +125,10 @@ table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid
    <table>
     <thead>
      <tr>
-      <th>
-       🕒
-      </th>
-      <th>
-       🔋
-      </th>
-      <th>
-       🗑️
-      </th>
+      <th>#️⃣</th>
+      <th>🕒</th>
+      <th>🔋</th>
+      <th>🗑️</th>
      </tr>
     </thead>
     <tbody id="tb">
@@ -203,8 +198,8 @@ async function githubRestore(){
 <script>
 let data=JSON.parse(localStorage.getItem('riwayat')||'[]');
 function simpan(){localStorage.setItem('riwayat',JSON.stringify(data))}
-function render(){tb.innerHTML='';if(!data.length){tb.innerHTML='<tr><td colspan=3>Belum ada riwayat</td></tr>';return;}
-data.forEach((x,i)=>tb.innerHTML+=`<tr><td>${x.j} j, ${x.m} mnt</td><td>${x.p}%</td><td><button class="del r" onclick="hapusSatu(${i})">🗑</button></td></tr>`);}
+function render(){tb.innerHTML='';if(!data.length){tb.innerHTML='<tr><td colspan=4>Belum ada riwayat</td></tr>';return;}
+data.forEach((x,i)=>tb.innerHTML+=`<tr><td>${i+1}</td><td>${x.j} j, ${x.m} mnt</td><td>${x.p}%</td><td><button class="del r" onclick="hapusSatu(${i})">🗑</button></td></tr>`);}
 function tambah(){let j=(+j1.value||0)+(+j2.value||0),m=(+m1.value||0)+(+m2.value||0),p=(+p1.value||0)+(+p2.value||0);j+=Math.floor(m/60);m%=60;data.push({j,m,p});simpan();
 const btn=document.getElementById('modeBtn');
 if(localStorage.getItem('mode')==='light'){document.body.classList.add('light');btn.textContent='☀️';}
