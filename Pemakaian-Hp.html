@@ -547,16 +547,6 @@ function toggleSettings() {
         renderRiwayat();
       }
 
-      function resetForm() {
-        document.getElementById('baterai').value = '';
-        document.getElementById('suhuLingkungan').value = '';
-        document.getElementById('suhuTerasa').value = '';
-        document.getElementById('kelembapan').value = '';
-        document.getElementById('tanggal').value=new Date().toISOString().slice(0,10);
-        document.getElementById('berakhir').value = '';
-        document.getElementById('versi').value = '– Pilih Versi –';
-      }
-
       window.hapusSatu = function(id) {
         if (confirm('Hapus data ini?')) {
           dataList = dataList.filter(function(item) { return item.id!== id; });
