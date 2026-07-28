@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Catatan Bermain Game</title>
-<style>
-body{font-family:Arial,sans-serif;background:#f2f2f2;padding:20px}
-.container{max-width:520px;margin:auto;background:#fff;padding:20px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Catatan Bermain Game
+  </title>
+  <style>
+   body{font-family:Arial,sans-serif;background:#f2f2f2;padding:20px}
+.container{max-width:520px;margin:auto;background:rgba(255,255,255,.20);padding:20px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
 label{display:block;margin-top:10px}
 select,input{width:100%;padding:8px;margin-top:5px;box-sizing:border-box}
 button{width:100%;margin-top:15px;padding:10px;background:#2196F3;color:#fff;border:none;border-radius:5px;cursor:pointer}
@@ -34,7 +36,7 @@ width:90%;max-width:520px;padding:20px;border-radius:20px;background:#2b3445;z-i
 
 body.light{background:#f2f2f2;color:#000}
 body.dark{background:#121826;color:#fff}
-body.dark .container{background:#1d2433;color:#fff}
+body.dark .container{background:rgba(29,36,51,.5);color:#fff}
 body.dark label,body.dark h2,body.dark h3,body.dark p{color:#fff}
 body.dark input,body.dark select{background:#2a3347;color:#fff;border:1px solid #555}
 body.dark table,body.dark th,body.dark td{border-color:#4b5563}
@@ -65,96 +67,171 @@ background-position:center;
 background-repeat:no-repeat;
 z-index:-1;
 }
-
-</style>
-</head>
-<body>
-<div id="overlay" onclick="toggleSettings()"></div>
-<div class="container">
-<div class="header">
-<h2>Catatan Bermain Game</h2>
-<button class="settings-btn" onclick="toggleSettings()">⚙️</button>
-</div>
-<div id="settingsMenu">
-<h3>1. Tampilan</h3>
-<p>Mode Tema</p>
-<div class="theme-switch">
-<button type="button" onclick="setTheme('dark')">🌙 Gelap</button>
-<button type="button" onclick="setTheme('light')">☀️ Terang</button>
-</div>
-
-<hr>
-<h3>2. Background</h3>
-<label>Pilih Gambar</label>
-<select id="bgSelect" onchange="setBackground(this.value)">
-<option value="">Tanpa Gambar</option>
-<option value="background/Foto_V1.jpg">Foto 1</option>
-<option value="background/Foto_V2.jpg">Foto 2</option>
-<option value="background/Foto_V3.jpg">Foto 3</option>
-<option value="background/Foto_V4.jpg">Foto 4</option>
-<option value="background/Foto_V5.jpg">Foto 5</option>
-<option value="background/Foto_V6.jpg">Foto 6</option>
-<option value="background/Foto_V7.jpg">Foto 7</option>
-<option value="background/Foto_V8.jpg">Foto 8</option>
-<option value="background/Foto_V9.jpg">Foto 9</option>
-<option value="background/Foto_V10.jpg">Foto 10</option>
-</select>
-
-<hr>
-<h3>3. GitHub Backup</h3>
-<label>GitHub Token</label>
-<input type="password" id="githubToken" placeholder="Masukkan Personal Access Token">
-<label>Repository (user/repo)</label>
-<input type="text" id="githubRepo" placeholder="username/repo">
-<button type="button" onclick="simpanGithub()">💾 Simpan GitHub</button>
-
-</div>
-
-<label>Nama Game</label>
-<select id="game">
-<option>Mobile Legends</option>
-<option>Free Fire</option>
-<option>Minecraft</option>
-<option>Raft Survival</option>
-<option>SpaceFlight</option>
-</select>
-
-<label>Tanggal & Jam Mulai</label>
-<input type="datetime-local" id="mulai">
-
-<label>Tanggal & Jam Berakhir</label>
-<input type="datetime-local" id="selesai">
-
-<label>Baterai (%)</label>
-<input type="number" id="baterai" min="1" max="100" placeholder="Contoh: 80">
-
-<div class="button-group">
-<button class="btn-simpan" onclick="simpan()">💾 Simpan Catatan</button>
-<div class="button-row">
-<button class="btn-cadang" onclick="cadangkan()">📦 Cadangkan</button>
-<button class="btn-pulih" onclick="pulihkanGithub()">📂 Pulihkan</button>
-<button class="btn-hapus" onclick="hapusSemua()">🗑️ Hapus Semua</button>
-</div>
-</div>
-<input type="file" id="restoreFile" accept=".json" style="display:none" onchange="pulihkan(event)">
-
-<table>
-<thead>
-<tr>
-<th>Tanggal</th>
-<th>Game</th>
-<th>Durasi</th>
-<th>Baterai</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody id="riwayat"></tbody>
-</table>
-</div>
-
-<script>
-
-/* Minimal LZString placeholder: replace with full embedded library in production.
+  </style>
+ </head>
+ <body>
+  <div id="overlay" onclick="toggleSettings()">
+  </div>
+  <div class="container">
+   <div class="header">
+    <h2>
+     Catatan Bermain Game
+    </h2>
+    <button class="settings-btn" onclick="toggleSettings()">
+     ⚙️
+    </button>
+   </div>
+   <div id="settingsMenu">
+    <h3>
+     1. Tampilan
+    </h3>
+    <p>
+     Mode Tema
+    </p>
+    <div class="theme-switch">
+     <button onclick="setTheme('dark')" type="button">
+      🌙 Gelap
+     </button>
+     <button onclick="setTheme('light')" type="button">
+      ☀️ Terang
+     </button>
+    </div>
+    <hr/>
+    <h3>
+     2. Background
+    </h3>
+    <label>
+     Pilih Gambar
+    </label>
+    <select id="bgSelect" onchange="setBackground(this.value)">
+     <option value="">
+      Tanpa Gambar
+     </option>
+     <option value="background/Foto_V1.jpg">
+      Foto 1
+     </option>
+     <option value="background/Foto_V2.jpg">
+      Foto 2
+     </option>
+     <option value="background/Foto_V3.jpg">
+      Foto 3
+     </option>
+     <option value="background/Foto_V4.jpg">
+      Foto 4
+     </option>
+     <option value="background/Foto_V5.jpg">
+      Foto 5
+     </option>
+     <option value="background/Foto_V6.jpg">
+      Foto 6
+     </option>
+     <option value="background/Foto_V7.jpg">
+      Foto 7
+     </option>
+     <option value="background/Foto_V8.jpg">
+      Foto 8
+     </option>
+     <option value="background/Foto_V9.jpg">
+      Foto 9
+     </option>
+     <option value="background/Foto_V10.jpg">
+      Foto 10
+     </option>
+    </select>
+    <hr/>
+    <h3>
+     3. GitHub Backup
+    </h3>
+    <label>
+     GitHub Token
+    </label>
+    <input id="githubToken" placeholder="Masukkan Personal Access Token" type="password"/>
+    <label>
+     Repository (user/repo)
+    </label>
+    <input id="githubRepo" placeholder="username/repo" type="text"/>
+    <button onclick="simpanGithub()" type="button">
+     💾 Simpan GitHub
+    </button>
+   </div>
+   <label>
+    Nama Game
+   </label>
+   <select id="game">
+    <option>
+     Mobile Legends
+    </option>
+    <option>
+     Free Fire
+    </option>
+    <option>
+     Minecraft
+    </option>
+    <option>
+     Raft Survival
+    </option>
+    <option>
+     SpaceFlight
+    </option>
+   </select>
+   <label>
+    Tanggal &amp; Jam Mulai
+   </label>
+   <input id="mulai" type="datetime-local"/>
+   <label>
+    Tanggal &amp; Jam Berakhir
+   </label>
+   <input id="selesai" type="datetime-local"/>
+   <label>
+    Baterai (%)
+   </label>
+   <input id="baterai" max="100" min="1" placeholder="Contoh: 80" type="number"/>
+   <div class="button-group">
+    <button class="btn-simpan" onclick="simpan()">
+     💾 Simpan Catatan
+    </button>
+    <div class="button-row">
+     <button class="btn-cadang" onclick="cadangkan()">
+      📦 Cadangkan
+     </button>
+     <button class="btn-pulih" onclick="pulihkanGithub()">
+      📂 Pulihkan
+     </button>
+     <button class="btn-hapus" onclick="hapusSemua()">
+      🗑️ Hapus Semua
+     </button>
+    </div>
+   </div>
+   <input accept=".json" id="restoreFile" onchange="pulihkan(event)" style="display:none" type="file"/>
+   <table>
+    <thead>
+     <tr>
+      <th>
+       No
+      </th>
+      <th>
+       Tanggal
+      </th>
+      <th>
+       Game
+      </th>
+      <th>
+       Durasi
+      </th>
+      <th>
+       Baterai
+      </th>
+      <th>
+       Aksi
+      </th>
+     </tr>
+    </thead>
+    <tbody id="riwayat">
+    </tbody>
+   </table>
+  </div>
+  <script>
+   /* Minimal LZString placeholder: replace with full embedded library in production.
    This shim preserves API using Base64 so app works offline without external CDN. */
 const LZString={
  compressToUTF16:function(s){return btoa(unescape(encodeURIComponent(s)));},
@@ -200,11 +277,12 @@ function render(){
  tb.innerHTML="";
  data.forEach((d,i)=>{
    let row=tb.insertRow();
-   row.insertCell(0).innerHTML=d.tanggal||"-";
-   row.insertCell(1).innerHTML=d.game;
-   row.insertCell(2).innerHTML=d.durasi;
-   row.insertCell(3).innerHTML=d.baterai;
-   let aksi=row.insertCell(4);
+   row.insertCell(0).innerHTML=i+1;
+   row.insertCell(1).innerHTML=d.tanggal||"-";
+   row.insertCell(2).innerHTML=d.game;
+   row.insertCell(3).innerHTML=d.durasi;
+   row.insertCell(4).innerHTML=d.baterai;
+   let aksi=row.insertCell(5);
    aksi.innerHTML='<button onclick="hapusSatu('+i+')">Hapus</button>';
  });
  localStorage.setItem("gameData",JSON.stringify(data));
@@ -323,7 +401,6 @@ const bg=localStorage.getItem('bgSelect')||'';
 document.getElementById('bgSelect').value=bg;
 setBackground(bg);
 }
-
-</script>
-</body>
+  </script>
+ </body>
 </html>
