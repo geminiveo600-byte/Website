@@ -216,6 +216,9 @@ z-index:-1;
        Game
       </th>
       <th>
+       Jam M/A
+      </th>
+      <th>
        Durasi
       </th>
       <th>
@@ -280,9 +283,10 @@ function render(){
    row.insertCell(0).innerHTML=i+1;
    row.insertCell(1).innerHTML=d.tanggal||"-";
    row.insertCell(2).innerHTML=d.game;
-   row.insertCell(3).innerHTML=d.durasi;
-   row.insertCell(4).innerHTML=d.baterai;
-   let aksi=row.insertCell(5);
+   row.insertCell(3).innerHTML=d.jam||"-";
+   row.insertCell(4).innerHTML=d.durasi;
+   row.insertCell(5).innerHTML=d.baterai;
+   let aksi=row.insertCell(6);
    aksi.innerHTML='<button onclick="hapusSatu('+i+')">Hapus</button>';
  });
  localStorage.setItem("gameData",JSON.stringify(data));
@@ -302,7 +306,8 @@ function simpan(){
     let tanggal=String(tglObj.getDate()).padStart(2,"0")+"."+
                 String(tglObj.getMonth()+1).padStart(2,"0")+"."+
                 tglObj.getFullYear();
-    data.push({tanggal:tanggal,game:game,durasi:menit+" menit",baterai:baterai+"%"});
+    const fmt=t=>t.toTimeString().slice(0,5).replace(":",".");
+    data.push({tanggal:tanggal,game:game,jam:fmt(m1)+"-"+fmt(m2),durasi:menit+" menit",baterai:baterai+"%"});
     render();
     mulai=selesai=baterai="";
     document.getElementById("mulai").value="";
