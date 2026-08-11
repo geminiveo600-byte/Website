@@ -1,1 +1,223 @@
+<!DOCTYPE html>
 
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Daftar Pemakaian Smartphone</title>
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#071020;
+    color:#fff;
+}
+
+header{
+    text-align:center;
+    padding:50px 20px 35px;
+}
+
+header h1{
+    font-size:40px;
+    font-style: italic;
+    font-weight:bold;
+}
+
+header p{
+    margin-top:12px;
+    color:#9aa6b2;
+    font-size:18px;
+}
+
+.container{
+    width:92%;
+    max-width:700px;
+    margin:auto;
+}
+
+.card{
+    background:#162234;
+    border:2px solid rgba(255,255,255,.15);
+    border-radius:28px;
+    padding:30px;
+    margin-bottom:35px;
+    transition:.25s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    border-color:#4b8cff;
+}
+
+.icon{
+    margin-bottom:20px;
+}
+.icon img{
+    width:64px;
+    height:64px;
+    object-fit:contain;
+    display:block;
+}
+
+.card h2{
+    font-size:40px;
+    margin-bottom:15px;
+}
+
+.card p{
+    color:#9aa6b2;
+    font-size:20px;
+    line-height:1.6;
+}
+
+.open{
+    display:inline-block;
+    margin-top:28px;
+    text-decoration:none;
+    font-size:24px;
+    font-weight:bold;
+}
+
+footer{
+    text-align:center;
+    color:#8d98a5;
+    font-size:18px;
+    padding:35px 20px;
+}
+
+:root{--bg:#071020;--text:#fff;--card:#162234}
+body{background-color:var(--bg)!important;color:var(--text)!important;background-repeat:no-repeat;background-position:center;background-size:cover;background-attachment:fixed}
+.card{background:var(--card)!important}
+body.light{--bg:#f5f7fb;--text:#111;--card:#fff}
+#themeBtn{position:fixed;top:15px;right:15px;padding:8px 12px;border-radius:20px}
+
+body::before{
+content:"";
+position:fixed;inset:0;
+background:rgba(0,0,0,var(--overlay,0));
+backdrop-filter:blur(var(--blur,0px));
+pointer-events:none;
+z-index:-1;
+}
+
+.rainbow-text{
+background:linear-gradient(90deg,#ff0000,#ff7f00,#ffff00,#00ff00,#00bfff,#0000ff,#8b00ff,#ff0000);
+background-size:400% 100%;
+-webkit-background-clip:text;
+-webkit-text-fill-color:transparent;
+background-clip:text;
+color:transparent!important;
+animation:rainbowMove 4s linear infinite;
+}
+@keyframes rainbowMove{
+0%{background-position:0% 50%;}
+100%{background-position:400% 50%;}
+}
+
+</style>
+<style>
+#settingsBtn{position:fixed;top:15px;right:15px;background:transparent;border:none;padding:0;font-size:28px;cursor:pointer;z-index:100;}
+#panel{display:none;position:fixed;top:55px;right:15px;background:#fff;color:#000;padding:12px;border-radius:10px;box-shadow:0 2px 8px #0005;z-index:99}
+body:not(.light) #panel{background:#162234;color:#fff}
+</style></head>
+<body><button id="settingsBtn">⚙️</button><div id="panel" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:999;align-items:center;justify-content:center">
+<div style="background:#162234;color:#fff;width:min(92vw,430px);border-radius:24px;padding:20px">
+<div style="font-size:30px;font-weight:bold">⚙️ Pengaturan</div><hr style="margin:12px 0;border-color:#334155"/>
+<div style="color:#1da1f2;font-weight:bold;margin:10px 0">1. Tampilan</div>
+<div>Mode Tema</div>
+<div style="display:flex;background:#334155;border-radius:14px;padding:4px;margin-top:8px">
+<button id="darkBtn" style="flex:1;padding:12px">🌙 Gelap</button>
+<button id="lightBtn" style="flex:1;padding:12px">☀️ Terang</button>
+</div>
+<hr style="margin:12px 0;border-color:#334155"/>
+<div style="color:#1da1f2;font-weight:bold;margin:10px 0">2. Background Foto</div>
+<div style="margin:10px 0">Pilih Gambar</div>
+<select id="bgSelect" style="width:100%;padding:16px;border-radius:22px;background:#2b3546;color:#fff;border:2px solid #1da1f2">
+<option value="">Default</option>
+<option value="background/Foto_V1.jpg">Foto 1</option>
+<option value="background/Foto_V2.jpg">Foto 2</option>
+<option value="background/Foto_V3.jpg">Foto 3</option>
+<option value="background/Foto_V4.jpg">Foto 4</option>
+<option value="background/Foto_V5.jpg">Foto 5</option>
+<option value="background/Foto_V6.jpg">Foto 6</option>
+<option value="background/Foto_V7.jpg">Foto 7</option>
+<option value="background/Foto_V8.jpg">Foto 8</option>
+<option value="background/Foto_V9.jpg">Foto 9</option>
+<option value="background/Foto_V10.jpg">Foto 10</option>
+</select>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;align-items:center;margin-top:18px">
+<label>Kecerahan Foto</label><input id="bright" max="150" min="50" type="range" value="100"/>
+<label>Blur Foto</label><input id="blur" max="20" min="0" type="range" value="0"/>
+<label>Gelap Overlay</label><input id="overlay" max="80" min="0" type="range" value="0"/>
+</div>
+</div></div>
+<header>
+<h1 class="rainbow-text">Daftar Pemakaian Smartphone</h1>
+<p class="rainbow-text">Pilih aplikasi yang ingin kamu gunakan</p>
+</header>
+<div class="container"><div class="card">
+<div class="icon"><img alt="Tiktok Biasa" src="img/tiktok-biasa.png.png"/></div>
+<h2 class="rainbow-text">Tiktok Biasa</h2>
+<p class="rainbow-text">
+            Catatan pemakaian tiktok biasa.
+        </p>
+<a class="open rainbow-text" href="Tiktok-Biasa.html">            Buka →        </a>
+</div>
+<div class="card">
+<div class="icon"><img alt="Tiktok Lite" src="img/kalkulator.png"/></div>
+<h2 class="rainbow-text">Tiktok Lite</h2>
+<p class="rainbow-text">
+            Catatan pemakaian tiktok lite.
+        </p>
+<a class="open rainbow-text" href="Tiktok-Lite.html">
+            Buka →
+        </a>
+</div>
+</div>
+<footer>
+<a class="green rainbow-text">
+    Menu kedua khusus untuk tiktok biasa dan tiktok lite.
+    </a>
+</footer>
+<script>
+const s=document.getElementById('settingsBtn'),pnl=document.getElementById('panel'),tg=document.getElementById('themeToggle');
+function sync(){let l=document.body.classList.contains('light');lightBtn.style.background=l?'#1da1f2':'transparent';darkBtn.style.background=!l?'#1da1f2':'transparent';}
+s.style.zIndex=1001;
+s.onclick=()=>{pnl.style.display=pnl.style.display==='flex'?'none':'flex';sync();};
+darkBtn.onclick=()=>{document.body.classList.remove('light');localStorage.theme='dark';sync();};
+lightBtn.onclick=()=>{document.body.classList.add('light');localStorage.theme='light';sync();};
+if(tg){
+tg.checked=document.body.classList.contains('light');
+tg.onchange=()=>{document.body.classList.toggle('light',tg.checked);localStorage.theme=tg.checked?'light':'dark';};
+}
+
+const bg=document.getElementById('bgSelect'),
+br=document.getElementById('bright'),
+bl=document.getElementById('blur'),
+ov=document.getElementById('overlay');
+function applyBg(){
+const p=bg.value;
+if(p){document.body.style.backgroundImage=`url('${p}')`;}else{document.body.style.backgroundImage='none';}
+document.body.style.backgroundSize="cover";
+document.body.style.backgroundPosition="center";
+document.body.style.filter=`brightness(${br.value}%)`;
+document.documentElement.style.setProperty('--blur',bl.value+'px');
+document.documentElement.style.setProperty('--overlay',(ov.value/100).toString());
+localStorage.setItem('bgcfg',JSON.stringify({p,b:br.value,l:bl.value,o:ov.value}));
+}
+const cfg=JSON.parse(localStorage.getItem('bgcfg')||'{}');
+if(cfg.p)bg.value=cfg.p;
+if(cfg.b)br.value=cfg.b;
+if(cfg.l)bl.value=cfg.l;
+if(cfg.o)ov.value=cfg.o;
+[bg,br,bl,ov].forEach(e=>e&&e.addEventListener('input',applyBg));
+applyBg();
+
+</script></body>
+</html>
