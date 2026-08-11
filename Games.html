@@ -281,7 +281,7 @@ function setBackground(bg){
         document.body.style.backgroundImage="";
         document.body.style.backgroundAttachment="";
     }
-    localStorage.setItem('bgSelect',bg);
+    localStorage.setItem('gameBg',bg);
 }
 let data=[];
 
@@ -413,7 +413,7 @@ window.onload=()=>{
  const th=localStorage.getItem('theme')||'light';setTheme(th);
 document.getElementById('githubToken').value=localStorage.getItem('githubToken')||'';
 document.getElementById('githubRepo').value=localStorage.getItem('githubRepo')||'';
-const bg=localStorage.getItem('bgSelect')||'';
+const bg=localStorage.getItem('gameBg')||'';
 document.getElementById('bgSelect').value=bg;
 setBackground(bg);
 }
