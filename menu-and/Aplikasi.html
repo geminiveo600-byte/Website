@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Catatan pemakaian aplikasi sosmed
+  </title>
+  <style>
+   body{font-family:Arial,sans-serif;background:#f2f2f2;padding:20px}
+.container{max-width:520px;margin:auto;background:rgba(255,255,255,.20);padding:20px;border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+label{display:block;margin-top:10px}
+select,input{width:100%;padding:8px;margin-top:5px;box-sizing:border-box}
+button{width:100%;margin-top:15px;padding:10px;background:#2196F3;color:#fff;border:none;border-radius:5px;cursor:pointer}
+table{width:100%;margin-top:20px;border-collapse:collapse}
+table,th,td{border:1px solid #ccc}
+th,td{padding:8px;text-align:center}
+th{background:#2196F3;color:#fff}
+
+.button-group{margin-top:15px}
+.button-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.button-group button{border:none;border-radius:12px;color:#fff;font-size:16px;font-weight:bold;padding:15px;cursor:pointer}
+.btn-simpan{width:100%;background:#1f86c7}
+.btn-cadang{background:#1f8f43}
+.btn-pulih{background:#b85f12}
+.btn-hapus{background:#b03030}
+
+
+.header{display:flex;justify-content:space-between;align-items:center}
+.settings-btn{width:auto!important;margin-top:0!important;padding:8px 12px!important;background:#666;border-radius:8px}
+#overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9998}
+#settingsMenu{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+width:90%;max-width:520px;padding:20px;border-radius:20px;background:#2b3445;z-index:9999;box-shadow:0 15px 40px rgba(0,0,0,.5)}
+
+
+
+body.light{background:#f2f2f2;color:#000}
+body.dark{background:#121826;color:#fff}
+body.dark .container{background:rgba(29,36,51,.5);color:#fff}
+body.dark label,body.dark h2,body.dark h3,body.dark p{color:#fff}
+body.dark input,body.dark select{background:#2a3347;color:#fff;border:1px solid #555}
+body.dark table,body.dark th,body.dark td{border-color:#4b5563}
+body.dark #settingsMenu{background:#222c3d;color:#fff;border:1px solid #3b465a}
+body.light #settingsMenu{background:#fff;color:#000;border:1px solid #ccc}
+.theme-switch{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.theme-switch button{background:#2196F3;color:#fff;border:none;border-radius:10px;padding:12px}
+
+html,body{
+width:100%;
+min-height:100vh;
+margin:0;
+padding:0;
+}
+body{
+background-size:cover!important;
+background-position:center!important;
+background-repeat:no-repeat!important;
+background-attachment:fixed!important;
+}
+
+#riwayat td{font-size:12px}
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background:inherit;
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+z-index:-1;
+}
+  </style>
+ </head>
+ <body>
+  <div id="overlay" onclick="toggleSettings()">
+  </div>
+  <div class="container">
+   <div class="header">
+    <h2>
+     Catatan pemakaian aplikasi sosmed
+    </h2>
+    <button class="settings-btn" onclick="toggleSettings()">
+     ⚙️
+    </button>
+   </div>
+   <div id="settingsMenu">
+    <h3>
+     1. Tampilan
+    </h3>
+    <p>
+     Mode Tema
+    </p>
+    <div class="theme-switch">
+     <button onclick="setTheme('dark')" type="button">
+      🌙 Gelap
+     </button>
+     <button onclick="setTheme('light')" type="button">
+      ☀️ Terang
+     </button>
+    </div>
+    <hr/>
+    <h3>
+     2. Background
+    </h3>
+    <label>
+     Pilih Gambar
+    </label>
+    <select id="bgSelect" onchange="setBackground(this.value)">
+     <option value="">
+      Tanpa Gambar
+     </option>
+     <option value="../background/Foto_V1.jpg">
+      Foto 1
+     </option>
+     <option value="../background/Foto_V2.jpg">
+      Foto 2
+     </option>
+     <option value="../background/Foto_V3.jpg">
+      Foto 3
+     </option>
+     <option value="../background/Foto_V4.jpg">
+      Foto 4
+     </option>
+     <option value="../background/Foto_V5.jpg">
+      Foto 5
+     </option>
+     <option value="../background/Foto_V6.jpg">
+      Foto 6
+     </option>
+     <option value="../background/Foto_V7.jpg">
+      Foto 7
+     </option>
+     <option value="../background/Foto_V8.jpg">
+      Foto 8
+     </option>
+     <option value="../background/Foto_V9.jpg">
+      Foto 9
+     </option>
+     <option value="../background/Foto_V10.jpg">
+      Foto 10
+     </option>
+    </select>
+    <hr/>
+    <h3>
+     3. GitHub Backup
+    </h3>
+    <label>
+     GitHub Token
+    </label>
+    <input id="githubToken" placeholder="Masukkan Personal Access Token" type="password"/>
+    <label>
+     Repository (user/repo)
+    </label>
+    <input id="githubRepo" placeholder="username/repo" type="text"/>
+    <button onclick="simpanGithub()" type="button">
+     💾 Simpan GitHub
+    </button>
+   </div>
+   <label>
+    Nama aplikasi
+   </label>
+   <select id="aplikasi">
+   <option>YouTube</option>
+   <option>Tiktok Studio</option>
+   <option>Tiktok Biasa</option>
+   <option>Tiktok Lite</option>
+   <option>Facebook</option>
+   <option>Instagram</option>
+   <option>Discord</option>
+   <option>X (twitter)</option>
+   </select>
+   <label>
+    Tanggal &amp; Jam Mulai
+   </label>
+   <input id="mulai" type="datetime-local"/>
+   <label>
+    Tanggal &amp; Jam Berakhir
+   </label>
+   <input id="selesai" type="datetime-local"/>
+   <label>
+    Baterai (%)
+   </label>
+   <input id="baterai" max="100" min="1" placeholder="Contoh: 80" type="number"/>
+   <div class="button-group">
+    <button class="btn-simpan" onclick="simpan()">
+     💾 Simpan Catatan
+    </button>
+    <div class="button-row">
+     <button class="btn-cadang" onclick="cadangkan()">
+      📦 Cadangkan
+     </button>
+     <button class="btn-pulih" onclick="pulihkanGithub()">
+      📂 Pulihkan
+     </button>
+     <button class="btn-hapus" onclick="hapusSemua()">
+      🗑️ Hapus Semua
+     </button>
+    </div>
+   </div>
+   <input accept=".json" id="restoreFile" onchange="pulihkan(event)" style="display:none" type="file"/>
+   <table>
+    <thead>
+     <tr>
+      <th>
+       No
+      </th>
+      <th>
+       Tanggal
+      </th>
+      <th>
+       aplikasi
+      </th>
+      <th>
+       Jam M/A
+      </th>
+      <th>
+       Durasi
+      </th>
+      <th>
+       Baterai
+      </th>
+      <th>
+       Aksi
+      </th>
+     </tr>
+    </thead>
+    <tbody id="riwayat">
+    </tbody>
+   </table>
+  </div>
+  <script>
+   /* Minimal LZString placeholder: replace with full embedded library in production.
+   This shim preserves API using Base64 so app works offline without external CDN. */
+const LZString={
+ compressToUTF16:function(s){return btoa(unescape(encodeURIComponent(s)));},
+ decompressFromUTF16:function(s){try{return decodeURIComponent(escape(atob(s)));}catch(e){return null;}}
+};
+
+
+function setTheme(t){
+ document.body.classList.remove('light','dark');
+ document.body.classList.add(t);
+ localStorage.setItem('theme',t);
+}
+
+
+function toggleSettings(){
+const m=document.getElementById('settingsMenu');
+const o=document.getElementById('overlay');
+const open=m.style.display!=='block';
+m.style.display=open?'block':'none';
+o.style.display=open?'block':'none';
+}
+
+
+
+function setBackground(bg){
+    if(bg){
+        document.body.style.backgroundImage=`url(${bg})`;
+        document.body.style.backgroundSize="cover";
+        document.body.style.backgroundPosition="center";
+        document.body.style.backgroundRepeat="no-repeat";
+        document.body.style.backgroundAttachment="fixed";
+    }else{
+        document.body.style.backgroundImage="";
+        document.body.style.backgroundAttachment="";
+    }
+    localStorage.setItem('AplikasibgSelect',bg);
+}
+let data=[];
+
+
+function render(){
+ let tb=document.getElementById("riwayat");
+ tb.innerHTML="";
+ data.forEach((d,i)=>{
+   let row=tb.insertRow();
+   row.insertCell(0).innerHTML=i+1;
+   row.insertCell(1).innerHTML=d.tanggal||"-";
+   row.insertCell(2).innerHTML=d.aplikasi;
+   row.insertCell(3).innerHTML=d.jam||"-";
+   row.insertCell(4).innerHTML=d.durasi;
+   row.insertCell(5).innerHTML=d.baterai;
+   let aksi=row.insertCell(6);
+   aksi.innerHTML='<button onclick="hapusSatu('+i+')">Hapus</button>';
+ });
+ localStorage.setItem("aplikasiData",JSON.stringify(data));
+}
+
+function simpan(){
+    let aplikasi=document.getElementById("aplikasi").value;
+    let mulai=document.getElementById("mulai").value;
+    let selesai=document.getElementById("selesai").value;
+    let baterai=document.getElementById("baterai").value;
+    if(!mulai||!selesai||!baterai){alert("Lengkapi semua data!");return;}
+    let m1=new Date(mulai);
+    let m2=new Date(selesai);
+    let menit=(m2-m1)/60000;
+    if(menit<0){alert("Jam berakhir harus lebih besar!");return;}
+    let tglObj=new Date(mulai);
+    let tanggal=String(tglObj.getDate()).padStart(2,"0")+"."+
+                String(tglObj.getMonth()+1).padStart(2,"0")+"."+
+                tglObj.getFullYear();
+    const fmt=t=>t.toTimeString().slice(0,5).replace(":",".");
+    data.push({tanggal:tanggal,aplikasi:aplikasi,jam:fmt(m1)+"-"+fmt(m2),durasi:menit+" menit",baterai:baterai+"%"});
+    render();
+    mulai=selesai=baterai="";
+    document.getElementById("mulai").value="";
+    document.getElementById("selesai").value="";
+    document.getElementById("baterai").value="";
+}
+
+function cadangkan(){
+ const packed=LZString.compressToUTF16(JSON.stringify(data));
+ const blob=new Blob([JSON.stringify({compressed:true,data:packed})],{type:"application/json"});
+ const url=URL.createObjectURL(blob);
+ const a=document.createElement("a");
+ a.href=url;a.download="backup-aplikasi.json";
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+
+function pulihkan(e){
+ const f=e.target.files[0]; if(!f)return;
+ const r=new FileReader();
+ r.onload=()=>{
+  try{
+    const obj=JSON.parse(r.result);
+    if(obj.compressed){
+      const dec=LZString.decompressFromUTF16(obj.data);
+      if(!dec) throw 0;
+      data=JSON.parse(dec);
+    }else{
+      data=Array.isArray(obj)?obj:JSON.parse(r.result);
+    }
+    render(); alert("Data berhasil dipulihkan.");
+  }catch{alert("File tidak valid.");}
+ };
+ r.readAsText(f);
+}
+
+
+function hapusSatu(i){
+ if(confirm("Hapus riwayat ini?")){
+   data.splice(i,1);
+   render();
+ }
+}
+function hapusSemua(){
+ if(confirm("Hapus semua riwayat?")){
+   data=[];
+   render();
+ }
+}
+
+
+function simpanGithub(){
+ localStorage.setItem("githubToken",document.getElementById("githubToken").value);
+ localStorage.setItem("githubRepo",document.getElementById("githubRepo").value);
+ alert("Pengaturan GitHub disimpan.");
+}
+async function cadangkan(){
+ const token=localStorage.getItem("githubToken"),repo=localStorage.getItem("githubRepo");
+ if(!token||!repo){alert("Isi pengaturan GitHub.");return;}
+ const packed=LZString.compressToUTF16(JSON.stringify(data));
+ const payload={compressed:true,data:packed};
+ const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+ const path="backup-aplikasi.json";
+ let sha;
+ const g=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{headers:{Authorization:`Bearer ${token}`}});
+ if(g.ok){sha=(await g.json()).sha;}
+ const body={message:"Backup data",content};
+ if(sha)body.sha=sha;
+ const r=await fetch(`https://api.github.com/repos/${repo}/contents/${path}`,{
+ method:"PUT",
+ headers:{Authorization:`Bearer ${token}`,"Content-Type":"application/json"},
+ body:JSON.stringify(body)});
+ alert(r.ok?"Backup berhasil":"Backup gagal");
+}
+async function pulihkanGithub(){
+ const token=localStorage.getItem("githubToken"),repo=localStorage.getItem("githubRepo");
+ if(!token||!repo){alert("Isi pengaturan GitHub.");return;}
+ const r=await fetch(`https://api.github.com/repos/${repo}/contents/backup-aplikasi.json`,{headers:{Authorization:`Bearer ${token}`}});
+ if(!r.ok){alert("Cadangan tidak ditemukan.");return;}
+ const f=await r.json();
+ const txt=decodeURIComponent(escape(atob(f.content.replace(/\n/g,""))));
+ const obj=JSON.parse(txt);
+ data=JSON.parse(LZString.decompressFromUTF16(obj.data));
+ render();
+ alert("Data dipulihkan.");
+}
+
+window.onload=()=>{
+ const s=localStorage.getItem("aplikasiData");
+ if(s){try{data=JSON.parse(s);}catch{}}
+ render();
+ const th=localStorage.getItem('theme')||'light';setTheme(th);
+document.getElementById('githubToken').value=localStorage.getItem('githubToken')||'';
+document.getElementById('githubRepo').value=localStorage.getItem('githubRepo')||'';
+const bg=localStorage.getItem('AplikasibgSelect')||'';
+document.getElementById('bgSelect').value=bg;
+setBackground(bg);
+}
+  </script>
+ </body>
+</html>
