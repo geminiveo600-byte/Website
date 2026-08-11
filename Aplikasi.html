@@ -265,7 +265,7 @@ function setBackground(bg){
         document.body.style.backgroundImage="";
         document.body.style.backgroundAttachment="";
     }
-    const bg=localStorage.getItem('AplikasibgSelect')||'';
+    localStorage.setItem('AplikasibgSelect',bg);
 }
 let data=[];
 
