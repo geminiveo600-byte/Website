@@ -284,7 +284,7 @@ function render(){
    let aksi=row.insertCell(6);
    aksi.innerHTML='<button onclick="hapusSatu('+i+')">Hapus</button>';
  });
- localStorage.setItem("gameData",JSON.stringify(data));
+ localStorage.setItem("aplikasiData",JSON.stringify(data));
 }
 
 function simpan(){
@@ -391,7 +391,7 @@ async function pulihkanGithub(){
 }
 
 window.onload=()=>{
- const s=localStorage.getItem("gameData");
+ const s=localStorage.getItem("aplikasiData");
  if(s){try{data=JSON.parse(s);}catch{}}
  render();
  const th=localStorage.getItem('theme')||'light';setTheme(th);
