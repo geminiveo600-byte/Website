@@ -247,9 +247,9 @@ document.body.style.backgroundPosition="center";
 document.body.style.filter=`brightness(${br.value}%)`;
 document.documentElement.style.setProperty('--blur',bl.value+'px');
 document.documentElement.style.setProperty('--overlay',(ov.value/100).toString());
-localStorage.setItem('bgcfg',JSON.stringify({p,b:br.value,l:bl.value,o:ov.value}));
+localStorage.setItem('index',JSON.stringify({p,b:br.value,l:bl.value,o:ov.value}));
 }
-const cfg=JSON.parse(localStorage.getItem('bgcfg')||'{}');
+const cfg=JSON.parse(localStorage.getItem('index')||'{}');
 if(cfg.p)bg.value=cfg.p;
 if(cfg.b)br.value=cfg.b;
 if(cfg.l)bl.value=cfg.l;
