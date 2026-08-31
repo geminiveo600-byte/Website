@@ -109,34 +109,34 @@ z-index:-1;
      <option value="">
       Tanpa Gambar
      </option>
-     <option value="../background/Foto_V1.jpg">
+     <option value="background/Foto_V1.jpg">
       Foto 1
      </option>
-     <option value="../background/Foto_V2.jpg">
+     <option value="background/Foto_V2.jpg">
       Foto 2
      </option>
-     <option value="../background/Foto_V3.jpg">
+     <option value="background/Foto_V3.jpg">
       Foto 3
      </option>
-     <option value="../background/Foto_V4.jpg">
+     <option value="background/Foto_V4.jpg">
       Foto 4
      </option>
-     <option value="../background/Foto_V5.jpg">
+     <option value="background/Foto_V5.jpg">
       Foto 5
      </option>
-     <option value="../background/Foto_V6.jpg">
+     <option value="background/Foto_V6.jpg">
       Foto 6
      </option>
-     <option value="../background/Foto_V7.jpg">
+     <option value="background/Foto_V7.jpg">
       Foto 7
      </option>
-     <option value="../background/Foto_V8.jpg">
+     <option value="background/Foto_V8.jpg">
       Foto 8
      </option>
-     <option value="../background/Foto_V9.jpg">
+     <option value="background/Foto_V9.jpg">
       Foto 9
      </option>
-     <option value="../background/Foto_V10.jpg">
+     <option value="background/Foto_V10.jpg">
       Foto 10
      </option>
     </select>
@@ -197,6 +197,13 @@ z-index:-1;
     Baterai (%)
    </label>
    <input id="baterai" max="100" min="1" placeholder="Contoh: 80" type="number"/>
+    <label>
+     Koneksi
+    </label>
+    <select id="koneksi">
+     <option value="Data">📱 Data</option>
+     <option value="WiFi">📶 WiFi</option>
+    </select>
    <div class="button-group">
     <button class="btn-simpan" onclick="simpan()">
      💾 Simpan Catatan
@@ -234,6 +241,9 @@ z-index:-1;
       </th>
       <th>
        Baterai
+      </th>
+      <th>
+       Koneksi
       </th>
       <th>
        Aksi
@@ -287,20 +297,21 @@ let data=[];
 
 
 function render(){
- let tb=document.getElementById("riwayat");
- tb.innerHTML="";
- data.forEach((d,i)=>{
-   let row=tb.insertRow();
-   row.insertCell(0).innerHTML=i+1;
-   row.insertCell(1).innerHTML=d.tanggal||"-";
-   row.insertCell(2).innerHTML=d.game;
-   row.insertCell(3).innerHTML=d.jam||"-";
-   row.insertCell(4).innerHTML=d.durasi;
-   row.insertCell(5).innerHTML=d.baterai;
-   let aksi=row.insertCell(6);
-   aksi.innerHTML='<button onclick="hapusSatu('+i+')">Hapus</button>';
- });
- localStorage.setItem("gameData",JSON.stringify(data));
+  let tb=document.getElementById("riwayat");
+  tb.innerHTML="";
+  data.forEach((d,i)=>{
+    let row=tb.insertRow();
+    row.insertCell(0).innerHTML=i+1;
+    row.insertCell(1).innerHTML=d.tanggal||"-";
+    row.insertCell(2).innerHTML=d.game;
+    row.insertCell(3).innerHTML=d.jam||"-";
+    row.insertCell(4).innerHTML=d.durasi;
+    row.insertCell(5).innerHTML=d.baterai;
+    row.insertCell(6).innerHTML=d.koneksi||"-";
+    let aksi=row.insertCell(7);
+    aksi.innerHTML='<button onclick="hapusSatu('+i+')">Hapus</button>';
+  });
+  localStorage.setItem("gameData",JSON.stringify(data));
 }
 
 function simpan(){
@@ -308,7 +319,8 @@ function simpan(){
     let mulai=document.getElementById("mulai").value;
     let selesai=document.getElementById("selesai").value;
     let baterai=document.getElementById("baterai").value;
-    if(!mulai||!selesai||!baterai){alert("Lengkapi semua data!");return;}
+    let koneksi=document.getElementById("koneksi").value;
+    if(!mulai||!selesai||!baterai||!koneksi){alert("Lengkapi semua data!");return;}
     let m1=new Date(mulai);
     let m2=new Date(selesai);
     let menit=(m2-m1)/60000;
@@ -318,12 +330,13 @@ function simpan(){
                 String(tglObj.getMonth()+1).padStart(2,"0")+"."+
                 tglObj.getFullYear();
     const fmt=t=>t.toTimeString().slice(0,5).replace(":",".");
-    data.push({tanggal:tanggal,game:game,jam:fmt(m1)+"-"+fmt(m2),durasi:menit+" menit",baterai:baterai+"%"});
+    data.push({tanggal:tanggal,game:game,jam:fmt(m1)+"-"+fmt(m2),durasi:menit+" menit",baterai:baterai+"%",koneksi:koneksi});
     render();
     mulai=selesai=baterai="";
     document.getElementById("mulai").value="";
     document.getElementById("selesai").value="";
     document.getElementById("baterai").value="";
+    document.getElementById("koneksi").value="Data";
 }
 
 function cadangkan(){
