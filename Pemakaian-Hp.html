@@ -387,6 +387,13 @@
 
     <div class="section">
       <h2>📊 Riwayat Catatan</h2>
+      <div class="riwayat-controls">
+        <label for="urutRiwayat">🔽 Urutkan Riwayat</label>
+        <select id="urutRiwayat">
+          <option value="terbaru">Tanggal terbaru → terlama</option>
+          <option value="terlama">Tanggal terlama → terbaru</option>
+        </select>
+      </div>
       <div class="table-container">
         <table class="riwayat-table" id="riwayatTable">
           <thead>
@@ -433,6 +440,7 @@
       const cadanganBtn = document.getElementById('cadanganBtn');
       const pulihkanBtn = document.getElementById('pulihkanBtn');
       const hapusSemuaBtn = document.getElementById('hapusSemuaBtn');
+      const urutRiwayat = document.getElementById('urutRiwayat');
       
 
       settingBtn.addEventListener('click', toggleSettings);
@@ -449,6 +457,10 @@
       cadanganBtn.addEventListener('click', cadangan);
       pulihkanBtn.addEventListener('click', pulihkan);
       hapusSemuaBtn.addEventListener('click', hapusSemua);
+      urutRiwayat.addEventListener('change', function() {
+        localStorage.setItem('urutRiwayat', urutRiwayat.value);
+        renderRiwayat();
+      });
 function toggleSettings() {
         const panel = document.getElementById('settingsPanel');
         panel.classList.toggle('hidden');
@@ -590,10 +602,35 @@ function toggleSettings() {
 }
 
       function renderRiwayat() {
-const tbody=document.getElementById('riwayatBody');
-if(!dataList.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center">Belum ada riwayat</td></tr>';return;}
-tbody.innerHTML=dataList.map((it,i)=>`<tr><td>${dataList.length-i}</td><td>${it.tanggal}</td><td>${(Number(it.jam)||0)*60+(Number(it.menit)||0)} menit</td><td>${it.baterai}%</td><td>${it.cas}</td><td>${it.koneksi||'-'}</td><td><button class="hapus-btn-small" onclick="hapusSatu(${it.id})">🗑️</button></td></tr>`).join('');
-}
+        const tbody = document.getElementById('riwayatBody');
+
+        if (!dataList.length) {
+          tbody.innerHTML = '<tr><td colspan="7" style="text-align:center">Belum ada riwayat</td></tr>';
+          return;
+        }
+
+        const urutan = urutRiwayat ? urutRiwayat.value : 'terbaru';
+
+        // Format tanggal data adalah YYYY-MM-DD, sehingga aman
+        // dibandingkan langsung berdasarkan tahun, bulan, dan tanggal.
+        const sortedData = [...dataList].sort(function(a, b) {
+          const dateA = String(a.tanggal || '');
+          const dateB = String(b.tanggal || '');
+          const compare = dateA.localeCompare(dateB);
+
+          // Jika tanggal sama, data dengan ID lebih baru tampil lebih dahulu.
+          if (compare === 0) {
+            return Number(b.id || 0) - Number(a.id || 0);
+          }
+
+          return urutan === 'terlama' ? compare : -compare;
+        });
+
+        tbody.innerHTML = sortedData.map((it, i) =>
+          `<tr><td>${i + 1}</td><td>${it.tanggal}</td><td>${(Number(it.jam)||0)*60+(Number(it.menit)||0)} menit</td><td>${it.baterai}%</td><td>${it.cas}</td><td>${it.koneksi||'-'}</td><td><button class="hapus-btn-small" onclick="hapusSatu(${it.id})">🗑️</button></td></tr>`
+        ).join('');
+      }
+
 async function cadangan() {
         const token=localStorage.getItem('githubToken')||'';
 const repo=localStorage.getItem('githubRepo')||'';
@@ -680,6 +717,9 @@ if(!token||!repo){alert('Isi GitHub Token dan Repository di Pengaturan.');return
       }
 
       loadAllSettings();
+      if (urutRiwayat) {
+        urutRiwayat.value = localStorage.getItem('urutRiwayat') || 'terbaru';
+      }
       renderRiwayat();
       document.getElementById('tanggal').value=new Date().toISOString().slice(0,10);
 });
