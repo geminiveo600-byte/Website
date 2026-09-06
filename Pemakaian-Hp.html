@@ -595,11 +595,6 @@ function toggleSettings() {
         return d.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
       }
 
-      function getVersiIcon(versi) {
-  if (versi.includes('44.2.3')) return '🔵';
-  if (versi.includes('44.3.2')) return '🟡';
-  return '❌';
-}
 
       function renderRiwayat() {
         const tbody = document.getElementById('riwayatBody');
