@@ -59,6 +59,9 @@ background-attachment:fixed!important;
 }
 
 #riwayat td{font-size:12px}
+.riwayat-controls{margin-top:20px}
+.riwayat-controls label{margin-top:0;font-weight:bold}
+.riwayat-controls select{margin-top:5px}
 body::before{
 content:"";
 position:fixed;
@@ -188,6 +191,7 @@ z-index:-1;
     <select id="koneksi">
      <option value="WiFi">WiFi</option>
      <option value="Data">Data</option>
+     <option value="Default">Default</option>
     </select>
    <div class="button-group">
     <button class="btn-simpan" onclick="simpan()">
@@ -206,7 +210,15 @@ z-index:-1;
     </div>
    </div>
    <input accept=".json" id="restoreFile" onchange="pulihkan(event)" style="display:none" type="file"/>
-   <table>
+   <div class="riwayat-controls">
+<label for="urutRiwayat">Urutan Riwayat</label>
+<select id="urutRiwayat" onchange="ubahUrutan(this.value)">
+<option value="terbaru">Tanggal terbaru → terlama</option>
+<option value="terlama">Tanggal terlama → terbaru</option>
+</select>
+</div>
+
+<table>
     <thead>
      <tr>
       <th>
@@ -281,22 +293,59 @@ function setBackground(bg){
 let data=[];
 
 
+function parseTanggalAplikasi(tanggal){
+  if(!tanggal) return 0;
+  const p=String(tanggal).trim().split(".");
+  if(p.length!==3) return 0;
+  const hari=Number(p[0]);
+  const bulan=Number(p[1]);
+  const tahun=Number(p[2]);
+  if(!Number.isFinite(hari)||!Number.isFinite(bulan)||!Number.isFinite(tahun)) return 0;
+  return new Date(tahun,bulan-1,hari).getTime();
+}
+
 function render(){
-  let tb=document.getElementById("riwayat");
+  const tb=document.getElementById("riwayat");
   tb.innerHTML="";
-  data.forEach((d,i)=>{
-    let row=tb.insertRow();
+
+  const urutan=localStorage.getItem("urutRiwayat") || "terbaru";
+  const sortedData=data.map((d,index)=>({d,index}));
+
+  sortedData.sort((a,b)=>{
+    const ta=parseTanggalAplikasi(a.d.tanggal);
+    const tbx=parseTanggalAplikasi(b.d.tanggal);
+
+    if(ta!==tbx){
+      return urutan==="terlama" ? ta-tbx : tbx-ta;
+    }
+
+    // Jika tanggal sama, pertahankan urutan asli.
+    return a.index-b.index;
+  });
+
+  sortedData.forEach((item,i)=>{
+    const d=item.d;
+    const originalIndex=item.index;
+    const row=tb.insertRow();
+
     row.insertCell(0).innerHTML=i+1;
     row.insertCell(1).innerHTML=d.tanggal||"-";
-    row.insertCell(2).innerHTML=d.aplikasi;
+    row.insertCell(2).innerHTML=d.aplikasi||"-";
     row.insertCell(3).innerHTML=d.jam||"-";
-    row.insertCell(4).innerHTML=d.durasi;
-    row.insertCell(5).innerHTML=d.baterai;
+    row.insertCell(4).innerHTML=d.durasi||"-";
+    row.insertCell(5).innerHTML=d.baterai||"-";
     row.insertCell(6).innerHTML=d.koneksi||"-";
-    let aksi=row.insertCell(7);
-    aksi.innerHTML='<button onclick="hapusSatu('+i+')">Hapus</button>';
+
+    const aksi=row.insertCell(7);
+    aksi.innerHTML='<button onclick="hapusSatu('+originalIndex+')">Hapus</button>';
   });
+
   localStorage.setItem("aplikasiData",JSON.stringify(data));
+}
+
+function ubahUrutan(nilai){
+  localStorage.setItem("urutRiwayat",nilai);
+  render();
 }
 
 function simpan(){
@@ -405,15 +454,22 @@ async function pulihkanGithub(){
 }
 
 window.onload=()=>{
- const s=localStorage.getItem("aplikasiData");
- if(s){try{data=JSON.parse(s);}catch{}}
- render();
- const th=localStorage.getItem('theme')||'light';setTheme(th);
-document.getElementById('githubToken').value=localStorage.getItem('githubToken')||'';
-document.getElementById('githubRepo').value=localStorage.getItem('githubRepo')||'';
-const bg=localStorage.getItem('AplikasibgSelect')||'';
-document.getElementById('bgSelect').value=bg;
-setBackground(bg);
+  const s=localStorage.getItem("aplikasiData");
+  if(s){try{data=JSON.parse(s);}catch{}}
+
+  const urutan=localStorage.getItem("urutRiwayat") || "terbaru";
+  const select=document.getElementById("urutRiwayat");
+  if(select) select.value=urutan;
+
+  render();
+
+  const th=localStorage.getItem('theme')||'light';
+  setTheme(th);
+  document.getElementById('githubToken').value=localStorage.getItem('githubToken')||'';
+  document.getElementById('githubRepo').value=localStorage.getItem('githubRepo')||'';
+  const bg=localStorage.getItem('AplikasibgSelect')||'';
+  document.getElementById('bgSelect').value=bg;
+  setBackground(bg);
 }
   </script>
  </body>
